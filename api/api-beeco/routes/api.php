@@ -12,7 +12,7 @@ Route::post('/login', [AuthController::class, 'login']);
 
 // Protegidas por JWT
 Route::middleware('auth:api')->group(function () {
-    // Perfil do usuário
+     
     Route::get('/me', [AuthController::class, 'me']);
 
     // Usuário
@@ -33,4 +33,11 @@ Route::middleware('auth:api')->group(function () {
     Route::get('/enderecos/{id}', [EnderecoController::class, 'show']);
     Route::put('/enderecos/{id}', [EnderecoController::class, 'update']);
     Route::delete('/enderecos/{id}', [EnderecoController::class, 'destroy']);
+  
+  // Favoritos
+    Route::get('/favoritos', [\App\Http\Controllers\FavoritoController::class, 'index']);
+    Route::post('/favoritos', [\App\Http\Controllers\FavoritoController::class, 'store']);
+    Route::delete('/favoritos/{prestador_id}', [\App\Http\Controllers\FavoritoController::class, 'destroy']);
+
 });
+>
