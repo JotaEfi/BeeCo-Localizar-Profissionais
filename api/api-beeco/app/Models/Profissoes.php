@@ -10,12 +10,12 @@ class Profissoes extends Model
     protected $primaryKey = 'id_profissao';
 
 
-    protected $filiable = [
+    protected $fillable = [
         'nome',
         'descricao',
         'categoria',
         'profissao_customizada',
-        'crated_by'
+        'created_by'
     ];
 
     protected $casts = [
@@ -24,6 +24,6 @@ class Profissoes extends Model
 
     public function creator()
     {
-        return $this->belongsTo(Users::class, 'crated_by');
+        return $this->belongsTo(Users::class, 'created_by');
     }
 }
