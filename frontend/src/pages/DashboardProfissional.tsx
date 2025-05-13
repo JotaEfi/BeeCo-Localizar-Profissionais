@@ -282,7 +282,7 @@ export const DashboardProfissional = () => {
 
           <div className='bg-white border border-gray-200 rounded-xl flex items-center justify-center py-12 mt-12 cursor-pointer hover:shadow-lg transition-shadow'>
             <span className='text-2xl font-semibold text-gray-500 mr-4'>
-              Criar Postagem
+              <Link to='/profile'>Criar postagem de seus serviços</Link>
             </span>
             <span className='text-3xl text-gray-400'>+</span>
           </div>
