@@ -8,14 +8,28 @@ import { CardFAQ } from '@/components/CardFAQ'
 import { DataFAQ } from '@/mock/DataFAQ'
 import { comments } from '@/mock/Comments'
 import Providers from '@/assets/providers.png'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import AOS from 'aos'
 import 'aos/dist/aos.css'
 
 export const Home = () => {
+  const [reviewStartIdx, setReviewStartIdx] = useState(0)
+  const reviewsPerPage = 3
+  const totalReviews = comments.length
+  const handlePrev = () => {
+    setReviewStartIdx((prev) =>
+      prev - reviewsPerPage < 0 ? 0 : prev - reviewsPerPage
+    )
+  }
+  const handleNext = () => {
+    setReviewStartIdx((prev) =>
+      prev + reviewsPerPage >= totalReviews ? prev : prev + reviewsPerPage
+    )
+  }
+
   useEffect(() => {
     AOS.init({
-      duration: 800, 
+      duration: 800,
       once: true,
     })
   }, [])
@@ -65,17 +79,46 @@ export const Home = () => {
                 forma de trabalhar com o BeeCo.
               </p>
             </div>
-            <div className='flex gap-3'>
-              {comments.map((comment) => (
-                <CardComment
-                  key={comment.name}
-                  name={comment.name}
-                  profession={comment.profession}
-                  rating={comment.rating}
-                  comment={comment.comment}
-                />
-              ))}
-            </div>
+            {/* Carrossel de avaliações */}
+            <>
+              <div className='flex gap-3'>
+                {comments
+                  .slice(reviewStartIdx, reviewStartIdx + reviewsPerPage)
+                  .map((comment) => (
+                    <CardComment
+                      key={comment.name}
+                      name={comment.name}
+                      profession={comment.profession}
+                      rating={comment.rating}
+                      comment={comment.comment}
+                    />
+                  ))}
+              </div>
+              <div className='flex justify-center gap-3 mt-6'>
+                <button
+                  onClick={handlePrev}
+                  className={`w-10 h-10 rounded-full flex items-center justify-center text-2xl transition-colors ${
+                    reviewStartIdx === 0
+                      ? 'bg-gray-300 text-white'
+                      : 'bg-[#FFC75A] text-white hover:bg-[#e6b54e]'
+                  }`}
+                  aria-label='Voltar avaliações'
+                >
+                  &#60;
+                </button>
+                <button
+                  onClick={handleNext}
+                  className={`w-10 h-10 rounded-full flex items-center justify-center text-2xl transition-colors ${
+                    reviewStartIdx + reviewsPerPage >= totalReviews
+                      ? 'bg-gray-300 text-white'
+                      : 'bg-[#FFC75A] text-white hover:bg-[#e6b54e]'
+                  }`}
+                  aria-label='Avançar avaliações'
+                >
+                  &#62;
+                </button>
+              </div>
+            </>
           </div>
         </div>
       </section>
