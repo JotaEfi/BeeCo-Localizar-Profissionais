@@ -10,23 +10,31 @@ import { Chat } from './pages/Chat'
 import { Profile } from './pages/Profile'
 import { Favorites } from './pages/Favorites'
 import { ContractingArea } from './pages/ContractingArea'
+import { ProfileProfessional } from './pages/ProfileProfessional'
 
 
 function App() {
   return (
-    <BrowserRouter> 
+    <BrowserRouter>
       <Routes>
         <Route path='/' element={<Home />} />
-        <Route path='/dashboard-profissional' element={<DashboardProfissional />} />
+        <Route
+          path='/dashboard-profissional'
+          element={<DashboardProfissional />}
+        />
         <Route path='/contracting' element={<ContractingArea />} />
         <Route path='/select/register' element={<RegisterOptionUser />} />
-        <Route path='/professional/register' element={<RegisterProfessional />}/>
+        <Route
+          path='/professional/register'
+          element={<RegisterProfessional />}
+        />
         <Route path='/register' element={<RegisterClient />} />
         <Route path='/login' element={<Login />} />
         <Route path='/search' element={<SearchProfessional />} />
         <Route path='/chat' element={<Chat />} />
-        <Route path="/profile" element={<Profile />} />
+        <Route path='/profile' element={<Profile />} />
         <Route path='/favorites' element={<Favorites />} />
+        <Route path='/profile/professional' element={<ProfileProfessional/>} />
       </Routes>
     </BrowserRouter>
   )
