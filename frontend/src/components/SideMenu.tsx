@@ -38,8 +38,8 @@ export const SideMenu = () => {
           icon={<Home size={iconSize} />} 
           label="Início" 
           isOpen={isOpen} 
-          isActive={getActiveItem("/")}
-          onClick={() => handleNavigation("/")}
+          isActive={getActiveItem("/dashboard-profissional")}
+          onClick={() => handleNavigation("/dashboard-profissional")}
         />
         <SideMenuItem 
           icon={<Search size={iconSize} />} 
