@@ -20,7 +20,7 @@ export const RegisterOptionUser = () => {
             width='full'
             className='text-[]'
             as={Link}
-            to='/register-professional'
+            to='/professional/register'
           >
             <p className='uppercase'>Profissional</p>
           </Button>
@@ -29,7 +29,7 @@ export const RegisterOptionUser = () => {
             size='md'
             width='full'
             as={Link}
-            to='/register-client'
+            to='/register'
           >
             <p className='uppercase'>cliente</p>
           </Button>

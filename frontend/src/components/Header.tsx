@@ -17,7 +17,7 @@ export const Header = () => {
     <header
       id='inicio'
       className='flex justify-center items-center py-4 bg-off-white'
-      data-aos="fade-down"
+      data-aos='fade-down'
     >
       <div className='flex gap-23 items-center '>
         <a href='#'>
@@ -56,12 +56,12 @@ export const Header = () => {
           <div className='flex items-center gap-11'>
             <span className='text-light-yellow'>|</span>
 
-            <a
-              href=''
+            <Link
+              to='/select/register'
               className='text-light-yellow underline uppercase font-medium tracking-wide text-sm'
             >
               criar conta
-            </a>
+            </Link>
 
             <Button
               variant='primary'
