@@ -25,7 +25,6 @@ export const DashboardProfissional = () => {
       <SideMenu />
       <div className='bg-[#FFFAF3] min-h-screen flex flex-col gap-8 ml-24 p-8'>
         <div className='max-w-7xl mx-auto w-full flex flex-col gap-8'>
-          {/* Header com fundo amarelo e card do usuário */}
           <div className='bg-[#FFC75A] rounded-xl h-40 flex items-end relative overflow-hidden'>
             <div className='absolute left-8 bottom-[-15px] bg-white rounded-xl shadow-lg flex items-center p-4 gap-4 min-w-[350px]'>
               <img
@@ -42,9 +41,7 @@ export const DashboardProfissional = () => {
             </div>
           </div>
 
-          {/* Seção inferior: Mensagens recentes e Calendário */}
           <div className='flex gap-8 mt-4'>
-            {/* Mensagens recentes */}
             <div className='bg-white rounded-xl shadow-md flex-1 p-6 flex flex-col'>
               <div className='font-semibold text-lg mb-2'>
                 Mensagens recentes
@@ -98,7 +95,6 @@ export const DashboardProfissional = () => {
               </Link>
             </div>
 
-            {/* Calendário simples */}
             <div className='bg-white rounded-xl shadow-md w-[350px] p-6'>
               <div className='flex justify-between items-center mb-4'>
                 <button className='text-gray-400'>&lt;</button>
@@ -115,7 +111,6 @@ export const DashboardProfissional = () => {
                 <div>S</div>
               </div>
               <div className='grid grid-cols-7 gap-2 text-center'>
-                {/* Exemplo de dias do mês, com alguns destacados */}
                 {Array.from({ length: 30 }, (_, i) => {
                   const day = i + 1
                   const isSelected = day === 12
@@ -139,7 +134,6 @@ export const DashboardProfissional = () => {
             </div>
           </div>
 
-          {/* Card de Compromissos separado */}
           <div className='bg-white rounded-xl shadow-md mt-12 p-6'>
             <div className='font-semibold text-lg mb-1'>Compromissos</div>
             <div className='text-gray-400 text-xs mb-3'>
@@ -236,7 +230,6 @@ export const DashboardProfissional = () => {
             </div>
           </div>
 
-          {/* Seção de Avaliações */}
           <div className='mt-8'>
             <div className='mb-4 flex items-center justify-between'>
               <div>
@@ -285,6 +278,13 @@ export const DashboardProfissional = () => {
                   </div>
                 ))}
             </div>
+          </div>
+
+          <div className='bg-white border border-gray-200 rounded-xl flex items-center justify-center py-12 mt-12 cursor-pointer hover:shadow-lg transition-shadow'>
+            <span className='text-2xl font-semibold text-gray-500 mr-4'>
+              Criar Postagem
+            </span>
+            <span className='text-3xl text-gray-400'>+</span>
           </div>
         </div>
       </div>
