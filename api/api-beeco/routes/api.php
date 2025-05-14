@@ -11,6 +11,13 @@ use App\Http\Controllers\ProfissaoController;
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 
+   // Endereços
+Route::get('/enderecos', [EnderecoController::class, 'index']);
+Route::post('/enderecos', [EnderecoController::class, 'store']);
+Route::get('/enderecos/{id}', [EnderecoController::class, 'show']);
+Route::put('/enderecos/{id}', [EnderecoController::class, 'update']);
+Route::delete('/enderecos/{id}', [EnderecoController::class, 'destroy']);
+
 // Protegidas por JWT
 Route::middleware('auth:api')->group(function () {
      
@@ -28,26 +35,27 @@ Route::middleware('auth:api')->group(function () {
     Route::put('/posts/{id}', [PostController::class, 'update']);
     Route::delete('/posts/{id}', [PostController::class, 'destroy']);
 
-    // Endereços
+
    
+
+    // Profissões
+    Route::get('/profissoes', [\App\Http\Controllers\ProfissaoController::class, 'index']);
+    Route::post('/profissoes', [\App\Http\Controllers\ProfissaoController::class, 'store']);
+
+});
   
   // Favoritos
     Route::get('/favoritos', [\App\Http\Controllers\FavoritoController::class, 'index']);
     Route::post('/favoritos', [\App\Http\Controllers\FavoritoController::class, 'store']);
     Route::delete('/favoritos/{prestador_id}', [\App\Http\Controllers\FavoritoController::class, 'destroy']);
 
-  // Profissões
-   
+ // Endereços
+    Route::get('/enderecos', [EnderecoController::class, 'index']);
+    Route::post('/enderecos', [EnderecoController::class, 'store']);
+    Route::get('/enderecos/{id}', [EnderecoController::class, 'show']);
+    Route::put('/enderecos/{id}', [EnderecoController::class, 'update']);
+    Route::delete('/enderecos/{id}', [EnderecoController::class, 'destroy']);
 
-});
+  
 
-Route::get('/enderecos', [EnderecoController::class, 'index']);
-Route::post('/enderecos', [EnderecoController::class, 'store']);
-Route::get('/enderecos/{id}', [EnderecoController::class, 'show']);
-Route::put('/enderecos/{id}', [EnderecoController::class, 'update']);
-Route::delete('/enderecos/{id}', [EnderecoController::class, 'destroy']);
-
-
-Route::get('/profissoes', [\App\Http\Controllers\ProfissaoController::class, 'index']);
-Route::post('/profissoes', [\App\Http\Controllers\ProfissaoController::class, 'store']);
 
