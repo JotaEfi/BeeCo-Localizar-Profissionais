@@ -10,6 +10,13 @@ use App\Http\Controllers\EnderecoController;
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 
+   // Endereços
+Route::get('/enderecos', [EnderecoController::class, 'index']);
+Route::post('/enderecos', [EnderecoController::class, 'store']);
+Route::get('/enderecos/{id}', [EnderecoController::class, 'show']);
+Route::put('/enderecos/{id}', [EnderecoController::class, 'update']);
+Route::delete('/enderecos/{id}', [EnderecoController::class, 'destroy']);
+
 // Protegidas por JWT
 Route::middleware('auth:api')->group(function () {
      
@@ -26,13 +33,6 @@ Route::middleware('auth:api')->group(function () {
     Route::get('/posts/{id}', [PostController::class, 'show']);
     Route::put('/posts/{id}', [PostController::class, 'update']);
     Route::delete('/posts/{id}', [PostController::class, 'destroy']);
-
-    // Endereços
-    Route::get('/enderecos', [EnderecoController::class, 'index']);
-    Route::post('/enderecos', [EnderecoController::class, 'store']);
-    Route::get('/enderecos/{id}', [EnderecoController::class, 'show']);
-    Route::put('/enderecos/{id}', [EnderecoController::class, 'update']);
-    Route::delete('/enderecos/{id}', [EnderecoController::class, 'destroy']);
   
   // Favoritos
     Route::get('/favoritos', [\App\Http\Controllers\FavoritoController::class, 'index']);
@@ -40,4 +40,3 @@ Route::middleware('auth:api')->group(function () {
     Route::delete('/favoritos/{prestador_id}', [\App\Http\Controllers\FavoritoController::class, 'destroy']);
 
 });
->

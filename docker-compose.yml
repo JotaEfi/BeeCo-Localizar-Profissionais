@@ -1,0 +1,16 @@
+version: '3.9'
+
+services:
+  api:
+    build:
+      context: ./api/api-beeco
+    container_name: laravel_api
+    volumes:
+      - ./api/api-beeco:/var/www
+    ports:
+      - "8000:8000"
+    working_dir: /var/www
+    environment:
+      - DB_CONNECTION=sqlite
+      - DB_DATABASE=/var/www/database/database.sqlite
+    command: php artisan serve --host=0.0.0.0 --port=8000
