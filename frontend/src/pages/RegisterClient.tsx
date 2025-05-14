@@ -2,8 +2,41 @@ import { Button } from '@/components/Button'
 import { Input } from '@/components/Input'
 import { Link } from 'react-router-dom'
 import googleIcon from '@/assets/google.svg'
+import { createUser } from '@/api/userApi'
+
+import { useState } from 'react'
 
 export const RegisterClient = () => {
+
+  const [formData, setFormData] = useState({
+    nome: '',
+    email: '',
+    senha: '',
+    senha_confirmation: '',
+    tipo: 'contratante',
+    data_nascimento: '27/07/2004',
+    sexo: 'M',
+    foto_perfil: 'null',
+    telefone: '12121221212',
+    id_endereco: 1 // ou outro valor padrão
+  });
+
+  const handleChange = (field: string, value: string) => {
+    setFormData((prev) => ({
+      ...prev,
+      [field]: value,
+    }));
+  };
+
+  const handleRegister = async () => {
+    try {
+      const response = await createUser(formData);
+      console.log('Usuário criado:', response);
+    } catch (error) {
+      console.error('Erro no cadastro:', error);
+    }
+  };
+
   return (
     <div className='flex flex-col justify-center items-center h-screen bg-[url("./assets/register-client.jpg")] bg-cover bg-center'>
       <div className='flex gap-30 justify-center items-center w-[800px] '>
@@ -36,24 +69,17 @@ export const RegisterClient = () => {
               </span>
               <hr className='border-gray-300 w-[130px]' />
             </div>
-            <Input label='Nome' type='text' placeholder='Digite seu nome' />
-            <Input label='Email' type='text' placeholder='Digite seu email' />
-            <Input
-              label='Senha'
-              type='password'
-              placeholder='Digite sua senha'
-            />
-            <Input
-              label='Confirmar Senha'
-              type='password'
-              placeholder='Confirme sua senha'
-            />
+              <Input label='Nome' type='text' placeholder='Digite seu nome' onChange={(e) => handleChange('nome', e.target.value)} />
+              <Input label='Email' type='text' placeholder='Digite seu email' onChange={(e) => handleChange('email', e.target.value)} />
+              <Input label='Senha' type='password' placeholder='Digite sua senha' onChange={(e) => handleChange('senha', e.target.value)} />
+              <Input label='Confirmar Senha' type='password' placeholder='Confirme sua senha' onChange={(e) => handleChange('senha_confirmation', e.target.value)} />
             <div className='flex justify-between items-center mt-6'>
               <Button
                 variant='primary'
                 size='md'
                 width='full'
                 className='uppercase'
+                onClick={handleRegister}
               >
                 continuar
               </Button>

@@ -7,10 +7,15 @@ services:
     container_name: laravel_api
     volumes:
       - ./api/api-beeco:/var/www
+      - laravel_vendor:/var/www/vendor
     ports:
       - "8000:8000"
     working_dir: /var/www
     environment:
       - DB_CONNECTION=sqlite
       - DB_DATABASE=/var/www/database/database.sqlite
-    command: php artisan serve --host=0.0.0.0 --port=8000
+      - APP_ENV=local          # Adicionando a variável de ambiente
+    command: sh -c "composer install && php artisan migrate && php artisan migrate:fresh && php artisan serve --host=0.0.0.0 --port=8000"
+
+volumes:
+  laravel_vendor:
