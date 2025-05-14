@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\EnderecoController;
+use App\Http\Controllers\ProfissaoController;
 
 // Autenticação
 Route::post('/register', [AuthController::class, 'register']);
@@ -33,10 +34,28 @@ Route::middleware('auth:api')->group(function () {
     Route::get('/posts/{id}', [PostController::class, 'show']);
     Route::put('/posts/{id}', [PostController::class, 'update']);
     Route::delete('/posts/{id}', [PostController::class, 'destroy']);
+
+
+   
+
+    // Profissões
+    Route::get('/profissoes', [\App\Http\Controllers\ProfissaoController::class, 'index']);
+    Route::post('/profissoes', [\App\Http\Controllers\ProfissaoController::class, 'store']);
+
+});
   
   // Favoritos
     Route::get('/favoritos', [\App\Http\Controllers\FavoritoController::class, 'index']);
     Route::post('/favoritos', [\App\Http\Controllers\FavoritoController::class, 'store']);
     Route::delete('/favoritos/{prestador_id}', [\App\Http\Controllers\FavoritoController::class, 'destroy']);
 
-});
+ // Endereços
+    Route::get('/enderecos', [EnderecoController::class, 'index']);
+    Route::post('/enderecos', [EnderecoController::class, 'store']);
+    Route::get('/enderecos/{id}', [EnderecoController::class, 'show']);
+    Route::put('/enderecos/{id}', [EnderecoController::class, 'update']);
+    Route::delete('/enderecos/{id}', [EnderecoController::class, 'destroy']);
+
+  
+
+
