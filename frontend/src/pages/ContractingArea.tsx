@@ -4,7 +4,7 @@ import Profissionals2 from '@/assets/professionals2.png'
 import Button from '@/components/Button'
 import { ProfessionalCard } from '@/components/ProfessionalCard'
 import { DataProfessionals } from '@/mock/DataProfessionals'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { ServiceCard } from '@/components/ServiceCard'
 import { services } from '@/mock/DataServiceCards'
 
@@ -64,7 +64,10 @@ export const ContractingArea = () => {
             </div>
             <div className='flex justify-between flex-wrap '>
               {DataProfessionals.slice(0, 3).map((item, index) => (
-                <ProfessionalCard key={index} {...item} />
+                  <Link to='/profile/professional'>
+                    <ProfessionalCard key={index} {...item} />
+                  </Link>
+
               ))}
             </div>
           </section>

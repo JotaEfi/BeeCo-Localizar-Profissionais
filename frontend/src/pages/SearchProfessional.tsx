@@ -4,6 +4,7 @@ import { ProfessionalCard } from '@/components/ProfessionalCard'
 import { SideMenu } from '@/components/SideMenu'
 import { Search, Filter } from 'lucide-react'
 import { DataProfessionals } from '@/mock/DataProfessionals'
+import { Link } from 'react-router-dom'
 
 export const SearchProfessional = () => {
   return (
@@ -27,10 +28,13 @@ export const SearchProfessional = () => {
 
                 <div className="grid grid-cols-5 gap-6.5 min-w-[1580px]">
                     {DataProfessionals.map((item, index) => (
+                      <Link to='/profile/professional'>
                         <ProfessionalCard
                             key={index}
                             {...item} //pega todas as propriedades
                         />
+                      
+                      </Link>
                     ))}
                 </div>
             </section>

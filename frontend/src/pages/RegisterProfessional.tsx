@@ -47,7 +47,7 @@ export const RegisterProfessional = () => {
 
     try {
       const response = await createUser(formData);
-      navigate('/dashboard')
+      navigate('/dashboard-professional')
       console.log('Usuário criado:', response);
     } catch (error) {
       console.error('Erro no cadastro:', error);

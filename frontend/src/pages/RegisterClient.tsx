@@ -46,7 +46,7 @@ export const RegisterClient = () => {
 
     try {
       const response = await createUser(formData);
-      navigate('/search')
+      navigate('/contracting')
       console.log('Usuário criado:', response);
     } catch (error) {
       console.error('Erro no cadastro:', error);

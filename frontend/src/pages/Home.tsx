@@ -56,7 +56,7 @@ export const Home = () => {
                   variant='outline'
                   className='uppercase'
                   as={Link}
-                  to='/search'
+                  to='/contracting'
                 >
                   experimentar agora
                 </Button>
