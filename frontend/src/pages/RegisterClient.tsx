@@ -1,6 +1,6 @@
 import { Button } from '@/components/Button'
 import { Input } from '@/components/Input'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { createUser } from '@/api/userApi'
 import { userType } from '@/types/userTypes'
 
@@ -21,7 +21,7 @@ export const RegisterClient = () => {
     id_endereco: 1
   });
   const [error, setError] = useState('')
-
+  const navigate = useNavigate();
   
 
   const handleChange = (field: string, value: string) => {
@@ -46,6 +46,7 @@ export const RegisterClient = () => {
 
     try {
       const response = await createUser(formData);
+      navigate('/search')
       console.log('Usuário criado:', response);
     } catch (error) {
       console.error('Erro no cadastro:', error);

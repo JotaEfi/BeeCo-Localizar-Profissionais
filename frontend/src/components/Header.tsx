@@ -56,7 +56,7 @@ export const Header = () => {
               borderRadius='rounded'
               className='uppercase font-medium tracking-wide py-3 text-sm'
               as={Link}
-              to='/search'
+              to='/login'
             >
               Entrar
             </Button>
