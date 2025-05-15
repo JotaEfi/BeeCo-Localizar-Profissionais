@@ -9,6 +9,9 @@ import { DataFAQ } from '@/mock/DataFAQ'
 import { comments } from '@/mock/Comments'
 import Providers from '@/assets/providers.png'
 import { Link } from 'react-router-dom'
+import { useState, useEffect } from 'react'
+import AOS from 'aos'
+import 'aos/dist/aos.css'
 
 export const Home = () => {
   const [reviewStartIdx, setReviewStartIdx] = useState(0)
@@ -48,7 +51,13 @@ export const Home = () => {
               </p>
 
               <div className='flex gap-5'>
-                <Button width='md' variant='outline' className='uppercase' as={Link} to='/search'>
+                <Button
+                  width='md'
+                  variant='outline'
+                  className='uppercase'
+                  as={Link}
+                  to='/search'
+                >
                   experimentar agora
                 </Button>
               </div>
