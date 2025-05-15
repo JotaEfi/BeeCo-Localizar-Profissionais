@@ -42,12 +42,12 @@ export const Header = () => {
           <div className='flex items-center gap-11'>
             <span className='text-light-yellow'>|</span>
 
-            <a
-              href=''
+            <Link
+              to={'/select/register'}
               className='text-light-yellow underline uppercase font-medium tracking-wide text-sm'
             >
               criar conta
-            </a>
+            </Link>
 
             <Button
               variant='primary'
@@ -56,7 +56,7 @@ export const Header = () => {
               borderRadius='rounded'
               className='uppercase font-medium tracking-wide py-3 text-sm'
               as={Link}
-              to='/login'
+              to='/search'
             >
               Entrar
             </Button>

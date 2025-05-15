@@ -1,9 +1,9 @@
 import { Button } from '@/components/Button'
 import { Input } from '@/components/Input'
+import { Select } from '@/components/Select'
+import { domesticProfessions } from '@/mock/DomesticProfession'
 
 import { Link } from 'react-router-dom'
-
-import googleIcon from '@/assets/google.svg'
 
 export const RegisterProfessional = () => {
   return (
@@ -11,26 +11,18 @@ export const RegisterProfessional = () => {
       <div className='flex gap-30 justify-center items-center w-[800px] '>
         <div className='flex flex-col gap-4'>
           <div className='flex flex-col gap-4'>
-            <div className='flex justify-center items-center gap-2'>
-              <Button
-                variant='softYellow'
-                size='md'
-                width='full'
-                icon={<img src={googleIcon} alt='Google' />}
-                className='text-gray-500'
-              >
-                Entrar com Google
-              </Button>
-            </div>
-            <div className='flex justify-center items-center gap-2 w-full '>
-              <hr className='border-gray-300 w-[130px]' />
-              <span className='text-gray-500 text-[.8rem] text-center px-2'>
-                Ou E-mail
-              </span>
-              <hr className='border-gray-300 w-[130px]' />
-            </div>
             <Input label='Nome' type='text' placeholder='Digite seu nome' />
             <Input label='Email' type='text' placeholder='Digite seu email' />
+            <Select label="Profissão" defaultValue="">
+              <option value="" disabled hidden>
+                Selecione uma profissão
+              </option>
+              {domesticProfessions.map((profession) => (
+                <option key={profession.id} value={profession.id}>
+                  {profession.name}
+                </option>
+              ))}
+            </Select>
             <Input
               label='Senha'
               type='password'
