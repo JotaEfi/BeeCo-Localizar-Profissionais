@@ -10,3 +10,8 @@ export interface userType {
     telefone: string,
     id_endereco: number
 }
+
+export interface userLoginType {
+    email: string, 
+    senha: string
+}
