@@ -42,12 +42,12 @@ export const Header = () => {
           <div className='flex items-center gap-11'>
             <span className='text-light-yellow'>|</span>
 
-            <a
-              href=''
+            <Link
+              to={'/select/register'}
               className='text-light-yellow underline uppercase font-medium tracking-wide text-sm'
             >
               criar conta
-            </a>
+            </Link>
 
             <Button
               variant='primary'
