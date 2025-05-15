@@ -3,6 +3,8 @@ import { Star } from 'lucide-react'
 import { SideMenu } from '@/components/SideMenu'
 import { CardComment } from '@/components/CardComment'
 import { comments } from '@/mock/Comments'
+import Button from '@/components/Button'
+import { Link } from 'react-router-dom'
 
 export const ProfileProfessional = () => {
   const [rating, setRating] = useState(4)
@@ -132,9 +134,12 @@ export const ProfileProfessional = () => {
             <p className='text-gray-500 mt-2'>
               Entre em contato para um orçamento sem compromisso!
             </p>
-            <button className='mt-4 bg-yellow-400 hover:bg-yellow-500 text-white font-medium py-3 px-8 rounded-full text-lg transition-all w-full max-w-xs self-start cursor-pointer'>
+            <Button 
+                as={Link}
+                to='/chat'
+            >
               Entrar em contato
-            </button>
+            </Button>
           </section>
 
           {/* Seção de adicionar comentário */}
@@ -174,12 +179,12 @@ export const ProfileProfessional = () => {
                       ))}
                     </div>
 
-                    <button
-                      className='px-6 py-2 bg-yellow-400 hover:bg-yellow-500 text-white rounded-full transition-all cursor-pointer'
+                    <Button
+                     
                       onClick={handleSubmit}
                     >
                       Comentar
-                    </button>
+                    </Button>
                   </div>
                 </div>
               </div>

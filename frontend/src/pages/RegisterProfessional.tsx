@@ -6,7 +6,7 @@ import { userType } from '@/types/userTypes'
 import { FormEvent, useState } from 'react'
 import { createUser } from '@/api/userApi'
 
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 export const RegisterProfessional = () => {
 
@@ -47,7 +47,7 @@ export const RegisterProfessional = () => {
 
     try {
       const response = await createUser(formData);
-      navigate('/dashboard-professional')
+      navigate('/dashboard-profissional')
       console.log('Usuário criado:', response);
     } catch (error) {
       console.error('Erro no cadastro:', error);
