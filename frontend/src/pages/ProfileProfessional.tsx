@@ -134,12 +134,11 @@ export const ProfileProfessional = () => {
             <p className='text-gray-500 mt-2'>
               Entre em contato para um orçamento sem compromisso!
             </p>
-            <Button 
-                as={Link}
-                to='/chat'
-            >
-              Entrar em contato
-            </Button>
+            <div className='w-[300px]'>
+              <Button as={Link} to='/chat'>
+                Entrar em contato
+              </Button>
+            </div>
           </section>
 
           {/* Seção de adicionar comentário */}
@@ -179,12 +178,7 @@ export const ProfileProfessional = () => {
                       ))}
                     </div>
 
-                    <Button
-                     
-                      onClick={handleSubmit}
-                    >
-                      Comentar
-                    </Button>
+                    <Button onClick={handleSubmit}>Comentar</Button>
                   </div>
                 </div>
               </div>
