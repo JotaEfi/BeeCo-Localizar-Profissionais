@@ -4,7 +4,7 @@ import { Select } from "@/components/Select";
 import { SideMenu } from "@/components/SideMenu";
 import { Textarea } from "@/components/TextArea";
 import { useState } from "react";
-
+import FileUpload from "@/components/FileUpload";
 
 
 export const Profile = () => {
@@ -143,7 +143,7 @@ export const Profile = () => {
                 )
             case 'Serviços':
                 return (
-                    <div className="w-full">
+                    <div className="w-full flex gap-[100px]">
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <Textarea 
                                 label="Descrição do serviço"
@@ -170,6 +170,8 @@ export const Profile = () => {
                             </Select>
                           
                         </div>
+
+                        < FileUpload />
 
                         {/* <div className="flex w-full mt-8">
                             <Button
