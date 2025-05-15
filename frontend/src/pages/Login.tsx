@@ -19,20 +19,20 @@ export const Login = () => {
 
                 <div className="flex flex-col gap-4">
                     <div className="flex flex-col gap-4">
-                        <div className="flex justify-center items-center gap-2">
-                        </div>
-                        <Input label="Email" type="text" placeholder="Digite seu email"/>
-                        <Input label="Senha" type="password" placeholder="Digite sua senha" />
-                        <div className="flex justify-between items-center mt-6">
-                            <Button 
-                                variant="primary" 
-                                size="md" 
-                                width="full" 
-                                className="uppercase"
-                            >
-                                entrar
-                            </Button>
-                        </div>
+                        <form className='flex gap-3 flex-col'>
+                            <Input label="Email" type="text" placeholder="Digite seu email"/>
+                            <Input label="Senha" type="password" placeholder="Digite sua senha" />
+                            <div className="flex justify-between items-center mt-6">
+                                <Button 
+                                    variant="primary" 
+                                    size="md" 
+                                    width="full" 
+                                    className="uppercase"
+                                >
+                                    entrar
+                                </Button>
+                            </div>
+                    </form>
                     
                     </div>
                     <p className="text-[0.7rem] text-gray-500 underline">Ao se inscrever no <span className="font-bold">Bee</span>Co, você concorda com nossa Política de Privacidade e Termos de Serviço</p>

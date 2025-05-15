@@ -57,7 +57,7 @@ export const Header = () => {
             <span className='text-light-yellow'>|</span>
 
             <Link
-              to='/select/register'
+              to={'/select/register'}
               className='text-light-yellow underline uppercase font-medium tracking-wide text-sm'
             >
               criar conta

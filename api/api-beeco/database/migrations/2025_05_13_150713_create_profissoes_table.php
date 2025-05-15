@@ -17,8 +17,10 @@ return new class extends Migration
             $table->string('descricao')->nullable();
             $table->string('categoria');
             $table->boolean('profissao_customizada')->default(false);
-            $table->foreignId('crated_by')->nullable();
+            $table->foreignId('created_by')->nullable();
             $table->timestamps();
+
+            $table->foreign('created_by')->references('id')->on('users')->onDelete('cascade');
         });
     }
 
