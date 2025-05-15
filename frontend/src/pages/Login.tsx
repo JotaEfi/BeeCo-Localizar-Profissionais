@@ -1,9 +1,7 @@
 import { Link } from "react-router-dom"
-
 import { Button } from "@/components/Button"
 import { Input } from "@/components/Input"
 
-import googleIcon from "@/assets/google.svg"
 
 export const Login = () => {
   return (
@@ -41,7 +39,7 @@ export const Login = () => {
                     
                     <p className="text-sm text-gray-500 text-center mt-3 flex justify-center items-center gap-1">Não tem uma conta?
                             <Link 
-                                to="/register-option"
+                                to="/select/register"
                                 className="text-light-yellow font-bold uppercase"
                             >
                                 criar conta

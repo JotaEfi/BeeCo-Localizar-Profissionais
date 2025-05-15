@@ -1,6 +1,6 @@
 import { Button } from '@/components/Button'
 import { Input } from '@/components/Input'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { createUser } from '@/api/userApi'
 import { userType } from '@/types/userTypes'
 
@@ -119,7 +119,7 @@ export const RegisterClient = () => {
             concorda com nossa Política de Privacidade e Termos de Serviço
           </p>
 
-          <p className='text-sm text-gray-500 text-center mt-3 flex justify-center items-center gap-1'>
+          {/* <p className='text-sm text-gray-500 text-center mt-3 flex justify-center items-center gap-1'>
             Não tem uma conta?
             <Link
               to='/register-option'
@@ -127,7 +127,7 @@ export const RegisterClient = () => {
             >
               criar conta
             </Link>
-          </p>
+          </p> */}
         </div>
       </div>
     </div>

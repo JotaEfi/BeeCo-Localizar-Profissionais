@@ -117,16 +117,17 @@ export const RegisterProfessional = () => {
             concorda com nossa Política de Privacidade e Termos de Serviço
           </p>
 
-          <p className='text-sm text-gray-500 text-center mt-3 flex justify-center items-center gap-1'>
+          {/* <p className='text-sm text-gray-500 text-center mt-3 flex justify-center items-center gap-1'>
             Não tem uma conta?
             <Link
-              to='/register-option'
+              to='/register'
               className='text-light-yellow font-bold uppercase'
             >
               criar conta
             </Link>
-          </p>
+          </p> */}
         </div>
+
         <div className='flex flex-col gap-4 w-[400px]'>
           <h1 className='font-[400] text-[3.7rem] text-dark-gray leading-[2.5rem]'>
             <span className='font-bold'>Bee</span>Co
