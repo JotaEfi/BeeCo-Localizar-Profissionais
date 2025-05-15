@@ -20,18 +20,18 @@ export const RegisterOptionUser = () => {
             width='full'
             className='text-[]'
             as={Link}
-            to='/register-professional'
+            to='/professional/register'
           >
-            <p className='uppercase'>Profissional</p>
+            <p className='uppercase'>sou profissional</p>
           </Button>
           <Button
             variant='outline'
             size='md'
             width='full'
             as={Link}
-            to='/register-client'
+            to='/register'
           >
-            <p className='uppercase'>cliente</p>
+            <p className='uppercase'>sou cliente</p>
           </Button>
           <p className='text-[0.7rem] text-gray-500 underline'>
             Ao se inscrever no <span className='font-bold'>Bee</span>Co, você

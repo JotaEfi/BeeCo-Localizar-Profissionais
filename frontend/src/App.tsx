@@ -4,12 +4,14 @@ import { RegisterProfessional } from '@/pages/RegisterProfessional'
 import { RegisterClient } from '@/pages/RegisterClient'
 import { RegisterOptionUser } from '@/pages/RegisterOptionUser'
 import { Home } from '@/pages/Home'
-import { AnnouncementPage } from './pages/AnnouncementPage'
+import { DashboardProfissional } from './pages/DashboardProfissional'
 import { SearchProfessional } from './pages/SearchProfessional'
 import { Chat } from './pages/Chat'
 import { Profile } from './pages/Profile'
 import { Favorites } from './pages/Favorites'
 import { ContractingArea } from './pages/ContractingArea'
+import { ProfileProfessional } from './pages/ProfileProfessional'
+
 import NewContract from './pages/NewContract'
 
 function App() {
@@ -17,7 +19,10 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path='/' element={<Home />} />
-        <Route path='/announcement' element={<AnnouncementPage />} />
+        <Route
+          path='/dashboard-profissional'
+          element={<DashboardProfissional />}
+        />
         <Route path='/contracting' element={<ContractingArea />} />
         <Route path='/select/register' element={<RegisterOptionUser />} />
         <Route
@@ -28,8 +33,9 @@ function App() {
         <Route path='/login' element={<Login />} />
         <Route path='/search' element={<SearchProfessional />} />
         <Route path='/chat' element={<Chat />} />
-        <Route path="/profile" element={<Profile />} />
+        <Route path='/profile' element={<Profile />} />
         <Route path='/favorites' element={<Favorites />} />
+        <Route path='/profile/professional' element={<ProfileProfessional/>} />
         <Route path='/contract' element={<NewContract />} />
       </Routes>
     </BrowserRouter>

@@ -8,15 +8,39 @@ import { CardFAQ } from '@/components/CardFAQ'
 import { DataFAQ } from '@/mock/DataFAQ'
 import { comments } from '@/mock/Comments'
 import Providers from '@/assets/providers.png'
+import { Link } from 'react-router-dom'
+import { useState, useEffect } from 'react'
+import AOS from 'aos'
+import 'aos/dist/aos.css'
 
 export const Home = () => {
+  const [reviewStartIdx, setReviewStartIdx] = useState(0)
+  const reviewsPerPage = 3
+  const totalReviews = comments.length
+  const handlePrev = () => {
+    setReviewStartIdx((prev) =>
+      prev - reviewsPerPage < 0 ? 0 : prev - reviewsPerPage
+    )
+  }
+  const handleNext = () => {
+    setReviewStartIdx((prev) =>
+      prev + reviewsPerPage >= totalReviews ? prev : prev + reviewsPerPage
+    )
+  }
+
+  useEffect(() => {
+    AOS.init({
+      duration: 800,
+      once: true,
+    })
+  }, [])
   return (
     <>
       <Header />
       <section className='w-full bg-off-white py-10'>
         <div className='container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8'>
           <div className='flex justify-center items-center gap-60 py-20'>
-            <div className='flex gap-6 flex-col'>
+            <div className='flex gap-6 flex-col' data-aos='fade-right'>
               <h1 className='font-[400] text-[4rem] text-dark-gray leading-[2.5rem]'>
                 <span className='font-bold'>Bee</span>Co
               </h1>
@@ -27,14 +51,24 @@ export const Home = () => {
               </p>
 
               <div className='flex gap-5'>
-                <Button width='md' variant='outline' className='uppercase'>
+                <Button
+                  width='md'
+                  variant='outline'
+                  className='uppercase'
+                  as={Link}
+                  to='/search'
+                >
                   experimentar agora
                 </Button>
               </div>
             </div>
 
             <div>
-              <img src={Workers} alt='Ilustração de Trabalhadores' />
+              <img
+                src={Workers}
+                alt='Ilustração de Trabalhadores'
+                data-aos='fade-left'
+              />
             </div>
           </div>
         </div>
@@ -52,17 +86,46 @@ export const Home = () => {
                 forma de trabalhar com o BeeCo.
               </p>
             </div>
-            <div className='flex gap-3'>
-              {comments.map((comment) => (
-                <CardComment
-                  key={comment.name}
-                  name={comment.name}
-                  profession={comment.profession}
-                  rating={comment.rating}
-                  comment={comment.comment}
-                />
-              ))}
-            </div>
+            {/* Carrossel de avaliações */}
+            <>
+              <div className='flex gap-3'>
+                {comments
+                  .slice(reviewStartIdx, reviewStartIdx + reviewsPerPage)
+                  .map((comment) => (
+                    <CardComment
+                      key={comment.name}
+                      name={comment.name}
+                      profession={comment.profession}
+                      rating={comment.rating}
+                      comment={comment.comment}
+                    />
+                  ))}
+              </div>
+              <div className='flex justify-center gap-3 mt-6'>
+                <button
+                  onClick={handlePrev}
+                  className={`w-10 h-10 rounded-full flex items-center justify-center text-2xl transition-colors ${
+                    reviewStartIdx === 0
+                      ? 'bg-gray-300 text-white'
+                      : 'bg-[#FFC75A] text-white hover:bg-[#e6b54e]'
+                  }`}
+                  aria-label='Voltar avaliações'
+                >
+                  &#60;
+                </button>
+                <button
+                  onClick={handleNext}
+                  className={`w-10 h-10 rounded-full flex items-center justify-center text-2xl transition-colors ${
+                    reviewStartIdx + reviewsPerPage >= totalReviews
+                      ? 'bg-gray-300 text-white'
+                      : 'bg-[#FFC75A] text-white hover:bg-[#e6b54e]'
+                  }`}
+                  aria-label='Avançar avaliações'
+                >
+                  &#62;
+                </button>
+              </div>
+            </>
           </div>
         </div>
       </section>
@@ -72,12 +135,13 @@ export const Home = () => {
           <div className='flex gap-18 justify-center'>
             <div>
               <img
+                data-aos='fade-right'
                 src={Providers}
                 className='w-150'
                 alt='Ilustração de prestadores'
               />
             </div>
-            <div className='flex flex-col gap-8 mt-15'>
+            <div className='flex flex-col gap-8 mt-15' data-aos='fade-left'>
               <h2 className='font-semibold leading-13.5 tracking-wide text-dark-gray text-6xl max-w-130'>
                 Como o BeeCo Funciona,{' '}
                 <span className='text-light-yellow'>Um processo simples</span>
@@ -106,11 +170,17 @@ export const Home = () => {
 
       <section id='recursos' className='w-full bg-white py-14'>
         <div className='container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8'>
-          <div className='flex flex-col gap-8 justify-center items-center'>
-            <h2 className='font-semibold text-4xl text-dark-gray'>
+          <div className='flex flex-col gap-4 justify-center items-center'>
+            <h2
+              className='font-semibold text-4xl text-dark-gray'
+              data-aos='fade-down'
+            >
               Recursos que Transforman
             </h2>
-            <p className='text-dark-gray max-w-[500px] text-center'>
+            <p
+              className='text-dark-gray max-w-[500px] text-center'
+              data-aos='fade-down'
+            >
               O BeeCo oferece ferramentas poderosas para simplificar a
               comunicação e o processo de contratação de serviços.
             </p>
