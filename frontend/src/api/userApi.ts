@@ -1,7 +1,10 @@
 import { userLoginType, userType } from '@/types/userTypes';
 import axios from 'axios';
+import { getCookie } from '@/utlis/cookies';
 
 const API_URL = 'http://localhost:8000/api';
+
+  const token = getCookie('token')
 
 export const createUser = async (
     userData: userType
@@ -28,3 +31,15 @@ export const loginUser = async (
     throw error;
   }
 }
+
+export const getUserData = async () => {
+  const response = await axios.get(`${API_URL}/me`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  })
+  console.log(response)
+  return response.data
+}
+
+//criar um useContext pra isso

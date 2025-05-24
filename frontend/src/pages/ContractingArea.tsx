@@ -64,7 +64,7 @@ export const ContractingArea = () => {
             </div>
             <div className='flex justify-between flex-wrap '>
               {DataProfessionals.slice(0, 3).map((item, index) => (
-                  <Link to='/profile/professional'>
+                  <Link to='/professional'>
                     <ProfessionalCard key={index} {...item} />
                   </Link>
 

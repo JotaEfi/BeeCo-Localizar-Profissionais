@@ -28,7 +28,7 @@ export const SearchProfessional = () => {
 
                 <div className="grid grid-cols-5 gap-6.5 min-w-[1580px]">
                     {DataProfessionals.map((item, index) => (
-                      <Link to='/profile/professional'>
+                      <Link to='/professional'>
                         <ProfessionalCard
                             key={index}
                             {...item} //pega todas as propriedades

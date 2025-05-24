@@ -11,6 +11,7 @@ import { Profile } from './pages/Profile'
 import { Favorites } from './pages/Favorites'
 import { ContractingArea } from './pages/ContractingArea'
 import { ProfileProfessional } from './pages/ProfileProfessional'
+import { ProtectedRoute } from './auth/ProtectedRoute'
 
 
 function App() {
@@ -18,23 +19,45 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path='/' element={<Home />} />
-        <Route
-          path='/dashboard-profissional'
-          element={<DashboardProfissional />}
-        />
-        <Route path='/contracting' element={<ContractingArea />} />
+        <Route path='/dashboard-profissional' element={
+          <ProtectedRoute allowedUserTypes={['prestador']}>
+            <DashboardProfissional />
+          </ProtectedRoute>
+         } />
+        <Route path='/contracting' element={
+          <ProtectedRoute allowedUserTypes={['prestador']}>
+            <ContractingArea />
+          </ProtectedRoute>
+        } />
+        <Route path='/search' element={
+          <ProtectedRoute allowedUserTypes={['contratante']}>
+            <SearchProfessional />
+          </ProtectedRoute>
+        } />
+        <Route path='/chat' element={
+          <ProtectedRoute allowedUserTypes={['contratante', 'prestador']}>
+            <Chat />
+          </ProtectedRoute>
+         } />
+        <Route path='/profile' element={
+          <ProtectedRoute allowedUserTypes={['contratante', 'prestador']}>
+            <Profile />
+          </ProtectedRoute>
+        } />
+        <Route path='/favorites' element={
+          <ProtectedRoute allowedUserTypes={['contratante']}>
+            <Favorites />
+          </ProtectedRoute>
+        } />
+        <Route path='/professional' element={
+          <ProtectedRoute allowedUserTypes={['contratante']}>
+            <ProfileProfessional/>
+          </ProtectedRoute>
+        } />
         <Route path='/select/register' element={<RegisterOptionUser />} />
-        <Route
-          path='/professional/register'
-          element={<RegisterProfessional />}
-        />
+        <Route path='/professional/register' element={<RegisterProfessional />} />
         <Route path='/register' element={<RegisterClient />} />
         <Route path='/login' element={<Login />} />
-        <Route path='/search' element={<SearchProfessional />} />
-        <Route path='/chat' element={<Chat />} />
-        <Route path='/profile' element={<Profile />} />
-        <Route path='/favorites' element={<Favorites />} />
-        <Route path='/profile/professional' element={<ProfileProfessional/>} />
       </Routes>
     </BrowserRouter>
   )
