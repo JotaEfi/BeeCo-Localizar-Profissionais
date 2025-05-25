@@ -5,7 +5,7 @@ import { domesticProfessions } from '@/mock/DomesticProfession'
 import { userType } from '@/types/userTypes'
 import { FormEvent, useState, useEffect } from 'react'
 import { createUser, getUserData } from '@/api/userApi'
-import { setCookie,getCookie } from '@/utlis/cookies'
+import { setCookie } from '@/utlis/cookies'
 
 import { useNavigate } from 'react-router-dom'
 
@@ -46,7 +46,6 @@ export const RegisterProfessional = () => {
       const {token, user} = response 
       setCookie('token', token)
       setCookie('id', user.id)
-      console.log(getCookie('id'))
       navigate('/dashboard-profissional')
       console.log('Usuário criado:', response);
     } catch (error) {

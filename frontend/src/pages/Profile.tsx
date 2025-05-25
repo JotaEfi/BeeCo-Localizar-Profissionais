@@ -3,6 +3,7 @@ import { Input } from "@/components/Input";
 import { Select } from "@/components/Select";
 import { SideMenu } from "@/components/SideMenu";
 import { Textarea } from "@/components/TextArea";
+import { getUserType } from "@/utlis/auth";
 import { useState } from "react";
 
 
@@ -19,16 +20,11 @@ export const Profile = () => {
         birth: '12/12/12'
       });
 
-    const scheduleData = {
-        morning: {
-            timeRange: '09h-12h',
-            appointments: [
-                { time: '11:00', name: 'Ana Julia' }
-            ]
-        },
-    };
+    const userType = getUserType();
 
-      const menuContent = ['Informações pessoais', 'Serviços', 'Disponibilidade']
+      const menuContent = userType === 'prestador' 
+        ? ['Informações pessoais', 'Serviços']
+        : ['Informações pessoais'];
       const [activeMenu, setActiveMenu] = useState('Informações pessoais')
       const [titleContent, setTitleContent] = useState('Informações pessoais')
 
@@ -180,48 +176,6 @@ export const Profile = () => {
                             </Button>
                         </div> */}
 
-                    </div>
-                )
-            case 'Disponibilidade':
-                return (
-                    <div className="p-8">
-                        <div className="max-w-3xl mx-auto">
-                            <div className="flex justify-between items-start mb-2">
-                                <div className="flex gap-6">
-                                    <div className="flex-1">
-                                        <h1 className="text-2xl font-semibold">Sua agenda</h1>
-                                        <p className="text-gray-400 text-sm">Consulte seus compromissos no dia!</p>
-                                    </div>
-                                    
-                                    <Input
-                                        type="date"
-                                    />
-                                </div>
-                            
-                            
-                            </div>
-
-                                {/* Morning Section */}
-                            <div className="mt-6 border border-gray-800 rounded-lg overflow-hidden">
-                                    <div className="flex justify-between items-center  bg-opacity-40 px-4 py-3  border-b-1 ">
-                                        <div className="flex items-center">
-                                            <span>Manhã</span>
-                                        </div>
-                                        <span className="text-gray-400 text-sm">{scheduleData.morning.timeRange}</span>
-                                    </div>
-                                
-                                <div className="px-4 py-3">
-                                    {scheduleData.morning.appointments.map((appointment, index) => (
-                                    <div key={index} className="flex justify-between items-center py-2 ">
-                                        <div className="flex items-center">
-                                        <span className="mr-4">{appointment.time}</span>
-                                        <span>{appointment.name}</span>
-                                        </div>
-                                    </div>
-                                    ))}
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 )
             default:

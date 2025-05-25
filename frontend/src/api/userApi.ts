@@ -33,13 +33,13 @@ export const loginUser = async (
 }
 
 export const getUserData = async () => {
-  const response = await axios.get(`${API_URL}/me`, {
+  const { data } = await axios.get(`${API_URL}/me`, {
     headers: {
       Authorization: `Bearer ${token}`
     }
   })
-  console.log(response)
-  return response.data
+  console.log(data.user)
+  return data.user
 }
 
 //criar um useContext pra isso

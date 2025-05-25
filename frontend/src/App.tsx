@@ -25,7 +25,7 @@ function App() {
           </ProtectedRoute>
          } />
         <Route path='/contracting' element={
-          <ProtectedRoute allowedUserTypes={['prestador']}>
+          <ProtectedRoute allowedUserTypes={['contratante']}>
             <ContractingArea />
           </ProtectedRoute>
         } />

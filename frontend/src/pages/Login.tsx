@@ -4,7 +4,7 @@ import { Input } from "@/components/Input"
 import { FormEvent, useState } from "react";
 import { userLoginType } from "@/types/userTypes";
 import { loginUser } from "@/api/userApi";
-
+import { setCookie } from "@/utlis/cookies";
 
 export const Login = () => {
     const [formData, setFormData] = useState<userLoginType>({
@@ -33,11 +33,15 @@ export const Login = () => {
     }
 
     try {
-      const response = await loginUser(formData);
-      navigate('/dashboard-profissional')
-      console.log('Usuário criado:', response);
+      const { token, user } = await loginUser(formData);
+      setCookie('token', token)
+      if(user.tipo === 'prestador') {
+          navigate('/dashboard-profissional')
+      } else if(user.tipo === 'contratante') {
+        navigate('/contracting')
+      }
     } catch (error) {
-      console.error('Erro no cadastro:', error);
+      console.error('Erro no login:', error);
     }
   };
   return (
