@@ -3,10 +3,11 @@ import { Input } from '@/components/Input'
 import { Select } from '@/components/Select'
 import { domesticProfessions } from '@/mock/DomesticProfession'
 import { userType } from '@/types/userTypes'
-import { FormEvent, useState } from 'react'
-import { createUser } from '@/api/userApi'
+import { FormEvent, useState, useEffect } from 'react'
+import { createUser, getUserData } from '@/api/userApi'
+import { setCookie } from '@/utlis/cookies'
 
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 export const RegisterProfessional = () => {
 
@@ -15,12 +16,7 @@ export const RegisterProfessional = () => {
     email: '',
     senha: '',
     senha_confirmation: '',
-    tipo: 'prestador',
-    data_nascimento: '1990-01-01',
-    sexo: 'M',
-    foto_perfil: 'null',
-    telefone: '12121221212',
-    id_endereco: 1
+    tipo: 'prestador'
   });
   const [error, setError] = useState('')
   const navigate = useNavigate();
@@ -47,12 +43,19 @@ export const RegisterProfessional = () => {
 
     try {
       const response = await createUser(formData);
-      navigate('/dashboard')
+      const {token, user} = response 
+      setCookie('token', token)
+      setCookie('id', user.id)
+      navigate('/dashboard-profissional')
       console.log('Usuário criado:', response);
     } catch (error) {
       console.error('Erro no cadastro:', error);
     }
   };
+
+  useEffect(() => {
+    getUserData()
+  }, [])
 
   return (
     <div className='flex flex-col justify-center items-center h-screen bg-[url("./assets/register-professional.jpg")] bg-cover bg-center'>

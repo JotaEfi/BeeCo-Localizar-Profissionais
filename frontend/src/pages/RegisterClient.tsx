@@ -5,6 +5,7 @@ import { createUser } from '@/api/userApi'
 import { userType } from '@/types/userTypes'
 
 import { FormEvent, useState } from 'react'
+import { setCookie } from '@/utlis/cookies'
 
 export const RegisterClient = () => {
 
@@ -13,12 +14,7 @@ export const RegisterClient = () => {
     email: '',
     senha: '',
     senha_confirmation: '',
-    tipo: 'contratante',
-    data_nascimento: '1990-01-01',
-    sexo: 'M',
-    foto_perfil: 'null',
-    telefone: '12121221212',
-    id_endereco: 1
+    tipo: 'contratante'
   });
   const [error, setError] = useState('')
   const navigate = useNavigate();
@@ -46,7 +42,10 @@ export const RegisterClient = () => {
 
     try {
       const response = await createUser(formData);
-      navigate('/search')
+      const {token, user} = response 
+      setCookie('token', token)
+      setCookie('id', user.id)
+      navigate('/contracting')
       console.log('Usuário criado:', response);
     } catch (error) {
       console.error('Erro no cadastro:', error);

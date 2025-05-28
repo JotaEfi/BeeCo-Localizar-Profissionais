@@ -4,6 +4,7 @@ import Button from "@/components/Button"
 import { Search } from "lucide-react"
 import { DataProfessionals } from "@/mock/DataProfessionals"
 import { ProfessionalCard } from "@/components/ProfessionalCard"
+import { Link } from "react-router-dom"
 
 export const Favorites = () => {
     return (
@@ -32,10 +33,12 @@ export const Favorites = () => {
 
                 <div className="grid grid-cols-5 gap-6.5 min-w-[1580px]">
                     {DataProfessionals.map((item, index) => (
-                        <ProfessionalCard
-                            key={index}
-                            {...item} 
-                        />
+                        <Link to='/professional'>
+                            <ProfessionalCard
+                                key={index}
+                                {...item} 
+                            />
+                        </Link>
                     ))}
                 </div>
             </section>

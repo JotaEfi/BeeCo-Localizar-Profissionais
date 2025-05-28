@@ -2,9 +2,12 @@ import { SideMenu } from '@/components/SideMenu'
 import { Link } from 'react-router-dom'
 import { CardComment } from '@/components/CardComment'
 import { comments } from '@/mock/Comments'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { getUserData } from '@/api/userApi'
+import { userType } from '@/types/userTypes'
 
 export const DashboardProfissional = () => {
+  const [userData, setUserData] = useState<userType | null>(null)
   const [reviewStartIdx, setReviewStartIdx] = useState(0)
   const reviewsPerPage = 3
   const totalReviews = comments.length
@@ -20,6 +23,20 @@ export const DashboardProfissional = () => {
     )
   }
 
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const response = await getUserData();
+        console.log('Dados do usuário:', response); 
+        setUserData(response);
+      } catch (error) {
+        console.error('Erro ao buscar dados do usuário:', error);
+      }
+    };
+
+    fetchUserData();
+  }, []);
+
   return (
     <>
       <SideMenu />
@@ -29,14 +46,14 @@ export const DashboardProfissional = () => {
           <div className='bg-[#FFC75A] rounded-xl h-40 flex items-end relative overflow-hidden'>
             <div className='absolute left-8 bottom-[-15px] bg-white rounded-xl shadow-lg flex items-center p-4 gap-4 min-w-[350px]'>
               <img
-                src='https://randomuser.me/api/portraits/men/32.jpg'
+                src={userData?.foto_perfil || 'https://randomuser.me/api/portraits/men/32.jpg'}
                 alt='Avatar'
                 className='w-16 h-16 rounded-full border-4 border-white -mt-4'
               />
               <div>
-                <div className='font-semibold text-lg'>Pedro Henrique</div>
+                <div className='font-semibold text-lg'>{userData?.nome || 'Carregando...'}</div>
                 <div className='text-gray-500 text-sm'>
-                  pedrohenrique@gmail.com
+                  {userData?.email || 'Carregando...'}
                 </div>
               </div>
             </div>

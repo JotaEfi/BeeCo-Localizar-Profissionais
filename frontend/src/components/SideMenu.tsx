@@ -2,12 +2,15 @@ import { Home, MessageSquare, User, LogOut, Menu, Search, Heart } from "lucide-r
 import { useState } from "react"
 import { useLocation, useNavigate } from "react-router-dom"
 import { SideMenuItem } from "./SideMenuItem"
+import { removeCookie } from "@/utlis/cookies"
+import { getUserType } from "@/utlis/auth"
 
 export const SideMenu = () => {
   const [isOpen, setIsOpen] = useState(false)
   const location = useLocation()
   const navigate = useNavigate()
   const iconSize = 22
+  const userType = getUserType();
 
   const getActiveItem = (path: string) => {
     return location.pathname === path
@@ -19,6 +22,12 @@ export const SideMenu = () => {
 
   const handleNavigation = (path: string) => {
     navigate(path)
+  }
+
+  const handleExit = () => {
+    removeCookie('token')
+    handleNavigation("/")
+
   }
 
   return (
@@ -34,27 +43,34 @@ export const SideMenu = () => {
           <Menu size={iconSize} strokeWidth={2} />
         </button>
 
-        <SideMenuItem 
-          icon={<Home size={iconSize} />} 
-          label="Início" 
-          isOpen={isOpen} 
-          isActive={getActiveItem("/dashboard-profissional")}
-          onClick={() => handleNavigation("/dashboard-profissional")}
-        />
-        <SideMenuItem 
-          icon={<Search size={iconSize} />} 
-          label="Pesquisar" 
-          isOpen={isOpen} 
-          isActive={getActiveItem("/search")}
-          onClick={() => handleNavigation("/search")}
-        />
-        <SideMenuItem 
-          icon={<Heart size={iconSize} />} 
-          label="Favoritos" 
-          isOpen={isOpen} 
-          isActive={getActiveItem("/favorites")}
-          onClick={() => handleNavigation("/favorites")}
-        />
+        {userType === "prestador" && (
+          <SideMenuItem 
+            icon={<Home size={iconSize} />} 
+            label="Início" 
+            isOpen={isOpen} 
+            isActive={getActiveItem("/dashboard-profissional")}
+            onClick={() => handleNavigation("/dashboard-profissional")}
+          />
+        )}
+
+        {userType === "contratante" && (
+          <>
+            <SideMenuItem 
+              icon={<Home size={iconSize} />} 
+              label="Início" 
+              isOpen={isOpen} 
+              isActive={getActiveItem("/contracting")}
+              onClick={() => handleNavigation("/contracting")}
+            />
+            <SideMenuItem 
+              icon={<Heart size={iconSize} />} 
+              label="Favoritos" 
+              isOpen={isOpen} 
+              isActive={getActiveItem("/favorites")}
+              onClick={() => handleNavigation("/favorites")}
+            />
+          </>
+        )}
         <SideMenuItem 
           icon={<MessageSquare size={iconSize} />} 
           label="Mensagens" 
@@ -74,7 +90,7 @@ export const SideMenu = () => {
           icon={<LogOut size={iconSize} />} 
           label="Sair" 
           isOpen={isOpen} 
-          onClick={() => handleNavigation("/")}
+          onClick={() => handleExit()}
         />
       </nav>
     </>

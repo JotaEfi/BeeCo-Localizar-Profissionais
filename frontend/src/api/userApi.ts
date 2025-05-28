@@ -1,7 +1,10 @@
-import { userType } from '@/types/userTypes';
+import { userLoginType, userType } from '@/types/userTypes';
 import axios from 'axios';
+import { getCookie } from '@/utlis/cookies';
 
 const API_URL = 'http://localhost:8000/api';
+
+  const token = getCookie('token')
 
 export const createUser = async (
     userData: userType
@@ -15,3 +18,28 @@ export const createUser = async (
     throw error;
   }
 };
+
+export const loginUser = async (
+  userData: userLoginType
+) => {
+  try {
+    const response = await axios.post(`${API_URL}/login`, userData);
+    console.log(response)
+    return response.data;
+  } catch (error) {
+    console.error('Erro ao logar usuário:', error);
+    throw error;
+  }
+}
+
+export const getUserData = async () => {
+  const { data } = await axios.get(`${API_URL}/me`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  })
+  console.log(data.user)
+  return data.user
+}
+
+//criar um useContext pra isso
