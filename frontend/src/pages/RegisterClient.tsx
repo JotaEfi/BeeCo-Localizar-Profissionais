@@ -47,6 +47,9 @@ export const RegisterClient = () => {
       setCookie('id', user.id)
       navigate('/contracting')
       console.log('Usuário criado:', response);
+       setTimeout(() => {
+        window.location.reload();
+      }, 0);
     } catch (error) {
       console.error('Erro no cadastro:', error);
       setError('Erro ao registrar usuário');

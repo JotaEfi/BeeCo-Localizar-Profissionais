@@ -3,14 +3,17 @@ import { Link } from 'react-router-dom'
 import { CardComment } from '@/components/CardComment'
 import { comments } from '@/mock/Comments'
 import { useEffect, useState } from 'react'
-import { getUserData } from '@/api/userApi'
-import { userType } from '@/types/userTypes'
+import { useUser } from '@/contexts/UserContext'
 
 export const DashboardProfissional = () => {
-  const [userData, setUserData] = useState<userType | null>(null)
+  const { userData, refreshUserData } = useUser()
   const [reviewStartIdx, setReviewStartIdx] = useState(0)
   const reviewsPerPage = 3
   const totalReviews = comments.length
+
+  useEffect(() => {
+    refreshUserData()
+  }, []) 
 
   const handlePrev = () => {
     setReviewStartIdx((prev) =>
@@ -22,20 +25,6 @@ export const DashboardProfissional = () => {
       prev + reviewsPerPage >= totalReviews ? prev : prev + reviewsPerPage
     )
   }
-
-  useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        const response = await getUserData();
-        console.log('Dados do usuário:', response); 
-        setUserData(response);
-      } catch (error) {
-        console.error('Erro ao buscar dados do usuário:', error);
-      }
-    };
-
-    fetchUserData();
-  }, []);
 
   return (
     <>

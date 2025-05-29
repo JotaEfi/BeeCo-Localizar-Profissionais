@@ -3,28 +3,12 @@ import { Input } from '@/components/Input'
 import { Select } from '@/components/Select'
 import { SideMenu } from '@/components/SideMenu'
 import { Textarea } from '@/components/TextArea'
-import { getUserType } from '@/utlis/auth'
+import { useUser } from '@/contexts/UserContext'
 import { useState } from 'react'
-import { updateUserData } from '@/api/userApi'
 
 export const Profile = () => {
   const [isEditing, setIsEditing] = useState(false)
-  const userType = getUserType()
-
-  const [formData, setFormData] = useState({
-    nome: 'Pedro Alexandre',
-    email: 'pedro@email.com',
-    telefone: '(55) 99999-1313',
-    localizacao: 'Juazeiro do Norte',
-    sexo: 'M',
-    cpf: '123.123.123-12',
-    data_nascimento: '1990-01-01',
-    foto_perfil: 'https://example.com/foto.jpg',
-    senha: '',
-    senha_confirmation: '',
-    tipo: userType,
-    id_endereco: 1,
-  })
+  const { userData, updateUser } = useUser()
 
   const [activeMenu, setActiveMenu] = useState('Informações pessoais')
   const [titleContent, setTitleContent] = useState('Informações pessoais')
@@ -35,31 +19,15 @@ export const Profile = () => {
     const { name, value, type } = e.target
 
     if (type === 'radio') {
-      setFormData({
-        ...formData,
-        sexo: value,
-      })
+      updateUser({ sexo: value })
     } else {
-      setFormData({
-        ...formData,
-        [name]: value,
-      })
+      updateUser({ [name]: value })
     }
   }
 
   const handleMenuClick = (menu: string) => {
     setActiveMenu(menu)
     setTitleContent(menu)
-  }
-
-  const handleSave = async () => {
-    try {
-      await updateUserData(formData)
-      alert('Usuário atualizado com sucesso!')
-      setIsEditing(false)
-    } catch (error) {
-      alert('Erro ao atualizar o usuário.')
-    }
   }
 
   const renderMenuContent = () => {
@@ -71,50 +39,44 @@ export const Profile = () => {
               <Input
                 placeholder='Digite seu nome'
                 label='Nome'
-                value={formData.nome}
+                value={userData.nome}
                 name='nome'
                 onChange={handleChange}
-                disabled={!isEditing}
               />
               <Input
                 placeholder='Digite seu e-mail'
                 label='E-mail'
-                value={formData.email}
+                value={userData.email}
                 name='email'
                 onChange={handleChange}
-                disabled={!isEditing}
               />
               <Input
                 placeholder='Digite seu número'
                 label='Telefone'
-                value={formData.telefone}
+                value={userData.telefone}
                 name='telefone'
                 onChange={handleChange}
-                disabled={!isEditing}
               />
               <Input
                 placeholder='Localização'
                 label='Localização'
-                value={formData.localizacao}
+                value={userData.localizacao}
                 name='localizacao'
                 onChange={handleChange}
-                disabled={!isEditing}
               />
               <Input
                 placeholder='***.***.***-**'
                 label='CPF'
-                value={formData.cpf}
+                value={userData.cpf}
                 name='cpf'
                 onChange={handleChange}
-                disabled
               />
               <Input
                 placeholder='YYYY-MM-DD'
                 label='Data de nascimento'
-                value={formData.data_nascimento}
+                value={userData.data_nascimento}
                 name='data_nascimento'
                 onChange={handleChange}
-                disabled={!isEditing}
               />
             </div>
 
@@ -126,9 +88,8 @@ export const Profile = () => {
                     type='radio'
                     name='sexo'
                     value='M'
-                    checked={formData.sexo === 'M'}
+                    checked={userData.sexo === 'M'}
                     onChange={handleChange}
-                    disabled={!isEditing}
                     className='mr-2 h-4 w-4 accent-yellow-400'
                   />
                   Masculino
@@ -138,7 +99,7 @@ export const Profile = () => {
                     type='radio'
                     name='sexo'
                     value='F'
-                    checked={formData.sexo === 'F'}
+                    checked={userData.sexo === 'F'}
                     onChange={handleChange}
                     disabled={!isEditing}
                     className='mr-2 h-4 w-4 accent-yellow-400'
@@ -150,21 +111,14 @@ export const Profile = () => {
                     type='radio'
                     name='sexo'
                     value='O'
-                    checked={formData.sexo === 'O'}
+                    checked={userData.sexo === 'O'}
                     onChange={handleChange}
-                    disabled={!isEditing}
                     className='mr-2 h-4 w-4 accent-yellow-400'
                   />
                   Outros
                 </label>
               </div>
             </div>
-
-            {isEditing && (
-              <div className='flex justify-end mt-8'>
-                <Button onClick={handleSave}>Salvar</Button>
-              </div>
-            )}
           </>
         )
       case 'Serviços':
@@ -206,9 +160,9 @@ export const Profile = () => {
           <div className='p-6 flex flex-col items-center'>
             <div className='h-16 w-16 rounded-full bg-yellow-300 mb-6'></div>
 
-            <span className='text-[1.2rem]'>{formData.nome}</span>
+            <span className='text-[1.2rem]'>{userData.nome || 'Usuário'}</span>
             <span className='text-gray-400 capitalize'>
-              {formData.tipo || 'Usuário'}
+              {userData.tipo || 'Usuário'}
             </span>
 
             <div className='w-full border-t border-gray-200 my-5'></div>
@@ -216,7 +170,7 @@ export const Profile = () => {
             <ul className='w-full text-center py-4 transition gap-3 flex flex-col'>
               {[
                 'Informações pessoais',
-                ...(userType === 'prestador' ? ['Serviços'] : []),
+                ...(userData.tipo === 'prestador' ? ['Serviços'] : []),
               ].map((menu, index) => (
                 <li
                   key={index}

@@ -47,6 +47,9 @@ export const RegisterProfessional = () => {
       setCookie('token', token)
       setCookie('id', user.id)
       navigate('/dashboard-profissional')
+      setTimeout(() => {
+        window.location.reload();
+      }, 0);
       console.log('Usuário criado:', response);
     } catch (error) {
       console.error('Erro no cadastro:', error);
