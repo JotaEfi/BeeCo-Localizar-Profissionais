@@ -56,6 +56,19 @@ Route::middleware('auth:api')->group(function () {
     Route::put('/enderecos/{id}', [EnderecoController::class, 'update']);
     Route::delete('/enderecos/{id}', [EnderecoController::class, 'destroy']);
 
-  
+  // negociacao
+    Route::get('/negociacao', [\App\Http\Controllers\NegociacaoController::class, 'index']);
+    Route::post('/negociacao', [\App\Http\Controllers\NegociacaoController::class, 'store']);
+    Route::get('/negociacao/{id}', [\App\Http\Controllers\NegociacaoController::class, 'show']);
+    Route::put('/negociacao/{id}', [\App\Http\Controllers\NegociacaoController::class, 'update']);
+    Route::delete('/negociacao/{id}', [\App\Http\Controllers\NegociacaoController::class, 'destroy']);
 
+      //tarefas
+      Route::get('/tarefas', [\App\Http\Controllers\TarefaController::class, 'index']);
+      Route::post('/tarefas', [\App\Http\Controllers\TarefaController::class, 'store']);
+      Route::get('/tarefas/{id}', [\App\Http\Controllers\TarefaController::class, 'show']);
+      Route::put('/tarefas/{id}', [\App\Http\Controllers\TarefaController::class, 'update']);
+      Route::delete('/tarefas/{id}', [\App\Http\Controllers\TarefaController::class, 'destroy']);
+      
+   
 
