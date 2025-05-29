@@ -49,7 +49,6 @@ export const updateUserData = async (userData: any) => {
         'Content-Type': 'application/json',
       },
     })
-    console.log('Usuário atualizado:', response.data)
     return response.data
   } catch (error) {
     console.error('Erro ao atualizar usuário:', error)
