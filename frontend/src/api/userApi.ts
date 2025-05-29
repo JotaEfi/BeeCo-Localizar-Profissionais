@@ -27,14 +27,18 @@ export const loginUser = async (userData: userLoginType) => {
   }
 }
 
+
 export const getUserData = async () => {
-  const { data } = await axios.get(`${API_URL}/me`, {
+  if(token) {
+    const { data } = await axios.get(`${API_URL}/me`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
   })
   console.log(data.user)
   return data.user
+  
+  }
 }
 
 export const updateUserData = async (userData: any) => {
@@ -52,5 +56,3 @@ export const updateUserData = async (userData: any) => {
     throw error
   }
 }
-
-console.log('Token:', token)
