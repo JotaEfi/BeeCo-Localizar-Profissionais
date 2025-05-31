@@ -8,8 +8,8 @@ import { setCookie } from "@/utlis/cookies";
 
 export const Login = () => {
     const [formData, setFormData] = useState<userLoginType>({
-        email: '',
-        senha: '',
+        email: 'luis@mail.com',
+        senha: '12345678',
     });
     
     const [error, setError] = useState('')
@@ -66,10 +66,10 @@ export const Login = () => {
                 <div className="flex flex-col gap-4">
                     <div className="flex flex-col gap-4">
                         <form className='flex gap-3 flex-col' onSubmit={handleLogin}>
-                            <Input label="Email" type="text" placeholder="Digite seu email"
+                            <Input label="Email" type="text" value="luis@mail.com" placeholder="Digite seu email"
                             onChange={(e) => handleChange("email", e.target.value)}
                             error={error} />
-                            <Input label="Senha" type="password" placeholder="Digite sua senha" onChange={(e) => handleChange("senha", e.target.value)}
+                            <Input label="Senha" type="password" placeholder="Digite sua senha" value='12345678' onChange={(e) => handleChange("senha", e.target.value)}
                             error={error}/>
                             <div className="flex justify-between items-center mt-6">
                                 <Button 

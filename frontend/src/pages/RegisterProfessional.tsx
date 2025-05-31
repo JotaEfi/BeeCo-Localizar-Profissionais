@@ -69,13 +69,15 @@ export const RegisterProfessional = () => {
 
               <Input 
                 label='Nome' type='text' 
-                placeholder='Digite seu nome' 
+                placeholder='Digite seu nome'
+                value={'jorge'} 
                 onChange={(e) => handleChange("nome", e.target.value)}
                 error={error}
               />
               <Input 
                 label='Email' 
                 type='text' 
+                value={'luis@mail.com'}
                 placeholder='Digite seu email' 
                 onChange={(e) => handleChange("email", e.target.value)}
                 error={error}
@@ -96,12 +98,14 @@ export const RegisterProfessional = () => {
               <Input
                 label='Senha'
                 type='password'
+                value={'12345678'}
                 placeholder='Digite sua senha'onChange={(e) => handleChange("senha", e.target.value)}
                 error={error}
               />
               <Input
                 label='Confirmar Senha'
                 type='password'
+                value={'12345678'}
                 placeholder='Confirme sua senha'onChange={(e) => handleChange("senha_confirmation", e.target.value)}
                 error={error}
               />
