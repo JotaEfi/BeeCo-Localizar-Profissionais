@@ -124,26 +124,24 @@ export const Profile = () => {
       case 'Serviços':
         return (
           <div className='w-full'>
-            <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
-              <Textarea
-                label='Descrição do serviço'
-                placeholder='Detalhe como é seu serviço...'
-                className='min-h-[100px]'
-              />
-              <Textarea
+            <div className='flex flex-col gap-4 w-[700px]'>
+                <Input type='text' placeholder='Dê um título ao seu serviço' label='Título' />
+                <Textarea
+                  label='Descrição do serviço'
+                  placeholder='Detalhe como é seu serviço...'
+                  className='min-h-[100px]'
+                />
+              {/* <Textarea
                 label='Descrição de experiência'
                 placeholder='Detalhe sobre sua experiência'
                 className='min-h-[100px]'
-              />
+              /> */}
               <Select label='Tipo do serviço'>
                 <option value='pedreiro'>Pedreiro</option>
                 <option value='faxineiro'>Faxineiro</option>
               </Select>
               <Input type='number' placeholder='R$0.00' label='Preço' />
-              <Select label='Cobrado por'>
-                <option value='hora'>Hora</option>
-                <option value='diária'>Diária</option>
-              </Select>
+        
             </div>
           </div>
         )
