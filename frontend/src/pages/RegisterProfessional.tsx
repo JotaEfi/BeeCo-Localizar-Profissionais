@@ -47,6 +47,9 @@ export const RegisterProfessional = () => {
       setCookie('token', token)
       setCookie('id', user.id)
       navigate('/dashboard-profissional')
+      setTimeout(() => {
+        window.location.reload();
+      }, 0);
       console.log('Usuário criado:', response);
     } catch (error) {
       console.error('Erro no cadastro:', error);
@@ -66,13 +69,14 @@ export const RegisterProfessional = () => {
 
               <Input 
                 label='Nome' type='text' 
-                placeholder='Digite seu nome' 
+                placeholder='Digite seu nome'
                 onChange={(e) => handleChange("nome", e.target.value)}
                 error={error}
               />
               <Input 
                 label='Email' 
                 type='text' 
+                
                 placeholder='Digite seu email' 
                 onChange={(e) => handleChange("email", e.target.value)}
                 error={error}
@@ -93,12 +97,14 @@ export const RegisterProfessional = () => {
               <Input
                 label='Senha'
                 type='password'
+                
                 placeholder='Digite sua senha'onChange={(e) => handleChange("senha", e.target.value)}
                 error={error}
               />
               <Input
                 label='Confirmar Senha'
                 type='password'
+                
                 placeholder='Confirme sua senha'onChange={(e) => handleChange("senha_confirmation", e.target.value)}
                 error={error}
               />

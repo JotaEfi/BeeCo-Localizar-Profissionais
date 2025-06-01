@@ -47,6 +47,9 @@ export const RegisterClient = () => {
       setCookie('id', user.id)
       navigate('/contracting')
       console.log('Usuário criado:', response);
+       setTimeout(() => {
+        window.location.reload();
+      }, 0);
     } catch (error) {
       console.error('Erro no cadastro:', error);
       setError('Erro ao registrar usuário');
@@ -72,6 +75,7 @@ export const RegisterClient = () => {
               <Input
                 label="Nome"
                 type="text"
+                value="josefa"
                 placeholder="Digite seu nome"
                 onChange={(e) => handleChange("nome", e.target.value)}
                 error={error}
@@ -79,6 +83,7 @@ export const RegisterClient = () => {
               <Input
                 label="Email"
                 type="text"
+                value="client@mail.com"
                 placeholder="Digite seu email"
                 onChange={(e) => handleChange("email", e.target.value)}
                 error={error}
@@ -86,6 +91,7 @@ export const RegisterClient = () => {
               <Input
                 label="Senha"
                 type="password"
+                value='12345678'
                 placeholder="Digite sua senha"
                 onChange={(e) => handleChange("senha", e.target.value)}
                 error={error}
@@ -93,6 +99,7 @@ export const RegisterClient = () => {
               <Input
                 label="Confirmar Senha"
                 type="password"
+                value='12345678'
                 placeholder="Confirme sua senha"
                 onChange={(e) => handleChange("senha_confirmation", e.target.value)}
                 error={error}

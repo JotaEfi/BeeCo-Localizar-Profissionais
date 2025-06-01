@@ -8,8 +8,8 @@ import { setCookie } from "@/utlis/cookies";
 
 export const Login = () => {
     const [formData, setFormData] = useState<userLoginType>({
-        email: '',
-        senha: '',
+        email: 'luis@mail.com',
+        senha: '12345678',
     });
     
     const [error, setError] = useState('')
@@ -37,8 +37,14 @@ export const Login = () => {
       setCookie('token', token)
       if(user.tipo === 'prestador') {
           navigate('/dashboard-profissional')
+           setTimeout(() => {
+              window.location.reload();
+            }, 0);
       } else if(user.tipo === 'contratante') {
         navigate('/contracting')
+         setTimeout(() => {
+            window.location.reload();
+          }, 0);
       }
     } catch (error) {
       console.error('Erro no login:', error);
