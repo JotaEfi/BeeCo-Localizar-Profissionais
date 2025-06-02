@@ -72,7 +72,34 @@ class UserController extends Controller
             ], 500);
         }
     }
+    public function getUsersByType($type)
+    {
+        try {
+            // Validate type parameter
+            if (!in_array($type, ['contratante', 'prestador'])) {
+                return response()->json([
+                    'message' => 'Tipo inválido. Use "contratante" ou "prestador"',
+                ], 400);
+            }
 
+            // Get users by type
+            $users = Users::where('tipo', $type)
+                ->select('id', 'nome', 'email', 'foto_perfil', 'tipo')
+                ->get();
+
+            return response()->json([
+                'message' => "Lista de usuários do tipo {$type}",
+                'users' => $users,
+                'count' => $users->count()
+            ], 200);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Erro ao buscar usuários',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+     }
     /**
      * Delete: Excluir conta do usuário logado
      */
