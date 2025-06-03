@@ -12,13 +12,17 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('avaliacao', function (Blueprint $table) {
-            $table->id('id_avaliacao');
-            $table->text('descricao')->nullable();
-            $table->unsignedInteger('nota'); // Removi CHECK por compatibilidade
-            $table->foreignId('id_prestador')->constrained('prestadores', 'id_prestador');
-            $table->foreignId('id_contratante')->constrained('contratantes', 'id_contratante');
-            $table->foreignId('id_contrato')->nullable()->constrained('contratos', 'id_contrato');
-            $table->timestamps();    
+             $table->id('id_avaliacao');
+        $table->unsignedBigInteger('prestador_id');
+        $table->unsignedBigInteger('contratante_id');
+        $table->tinyInteger('nota');
+        $table->text('comentario')->nullable();
+        $table->enum('tipo', ['prestador', 'contratante']);
+        $table->timestamps();
+
+        $table->foreign('prestador_id')->references('id')->on('users')->onDelete('cascade');
+        $table->foreign('contratante_id')->references('id')->on('users')->onDelete('cascade');
+
         });
     }
 

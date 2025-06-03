@@ -70,6 +70,12 @@ Route::middleware('auth:api')->group(function () {
       Route::get('/tarefas/{id}', [\App\Http\Controllers\TarefaController::class, 'show']);
       Route::put('/tarefas/{id}', [\App\Http\Controllers\TarefaController::class, 'update']);
       Route::delete('/tarefas/{id}', [\App\Http\Controllers\TarefaController::class, 'destroy']);
+
+      Route::get('/avaliacoes', [\App\Http\Controllers\AvaliacaoController::class, 'index']);
+      Route::post('/avaliacoes', [\App\Http\Controllers\AvaliacaoController::class, 'store']);
+      Route::get('/avaliacoes/{avaliacao}', [\App\Http\Controllers\AvaliacaoController::class, 'show']);
+      Route::put('/avaliacoes/{avaliacao}', [\App\Http\Controllers\AvaliacaoController::class, 'update']);
+      Route::delete('/avaliacoes/{avaliacao}', [\App\Http\Controllers\AvaliacaoController::class, 'destroy']);
       
    
 
