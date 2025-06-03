@@ -47,7 +47,7 @@ export const SearchProfessional = () => {
 
                 <div className="grid grid-cols-5 gap-6.5 min-w-[1580px]">
                     {post.map((item) => (
-                      <Link to='/professional'> 
+                      <Link to={`/professional/${item.id}`} key={item.id}> 
                         <ProfessionalCard
                           key={item.id}
                           img={item.imagem}  

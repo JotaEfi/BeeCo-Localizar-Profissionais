@@ -5,17 +5,8 @@ import { Search } from 'lucide-react'
 import { ProfessionalCard } from '@/components/ProfessionalCard'
 import { Link } from 'react-router-dom'
 import { useEffect, useState } from 'react'
-import { api } from '@/utlis/api'
 import { PostResponse } from '@/types/postTypes'
 import { getPosts } from '@/api/postApi'
-
-type Prestador = {
-  id: number
-  nome: string
-  email: string
-  foto_perfil: string | null
-  tipo: string
-}
 
 export const Favorites = () => {
    const [post, setPosts] = useState<PostResponse[]>([])
@@ -55,9 +46,8 @@ export const Favorites = () => {
         ) : (
           <div className="grid grid-cols-5 gap-6.5 min-w-[1580px]">
                     {post.map((item) => (
-                      <Link to='/professional'> 
+                      <Link to={`/professional/${item.id}`} key={item.id}> 
                         <ProfessionalCard
-                          key={item.id}
                           img={item.imagem}  
                           name={item.user.nome}
                           profession={item.categoria}

@@ -1,5 +1,3 @@
-import { Star } from 'lucide-react'
-
 interface ProfessionalCardProps {
   id?: number
   img?: string

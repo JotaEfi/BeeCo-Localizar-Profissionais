@@ -22,3 +22,14 @@ export const getPosts = async () => {
     throw error
   }
 }
+
+export const getPostsById = async (id?: string) => {
+  try {
+    const data = await api.get(`/posts/${id}`)
+    console.log('Post recebidos:', data)
+    return data
+  } catch (error) {
+    console.error('Erro ao buscar posts:', error)
+    throw error
+  }
+}
