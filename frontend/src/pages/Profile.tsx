@@ -23,7 +23,6 @@ export const Profile = () => {
   const [activeMenu, setActiveMenu] = useState('Informações pessoais')
   const [titleContent, setTitleContent] = useState('Informações pessoais')
 
-
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
@@ -42,12 +41,14 @@ export const Profile = () => {
   }
 
   const handlePostChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+    >
   ) => {
     const { name, value } = e.target
-    setPostData(prev => ({
+    setPostData((prev) => ({
       ...prev,
-      [name]: name === 'preco' ? Number(value) : value
+      [name]: name === 'preco' ? Number(value) : value,
     }))
   }
 
@@ -150,24 +151,27 @@ export const Profile = () => {
       case 'Serviços':
         return (
           <div className='w-full'>
-            <form onSubmit={handlePostSubmit} className='flex flex-col gap-4 w-[600px]'>
-                <Input 
-                  type='text' 
-                  placeholder='Dê um título ao seu serviço' 
-                  label='Título'
-                  name='titulo'
-                  value={postData.titulo}
-                  onChange={handlePostChange}
-                />
-                <Textarea
-                  label='Descrição do serviço'
-                  placeholder='Detalhe como é seu serviço...'
-                  className='min-h-[100px]'
-                  name='descricao'
-                  value={postData.descricao}
-                  onChange={handlePostChange}
-                />
-              <Select 
+            <form
+              onSubmit={handlePostSubmit}
+              className='flex flex-col gap-4 w-[600px]'
+            >
+              <Input
+                type='text'
+                placeholder='Dê um título ao seu serviço'
+                label='Título'
+                name='titulo'
+                value={postData.titulo}
+                onChange={handlePostChange}
+              />
+              <Textarea
+                label='Descrição do serviço'
+                placeholder='Detalhe como é seu serviço...'
+                className='min-h-[100px]'
+                name='descricao'
+                value={postData.descricao}
+                onChange={handlePostChange}
+              />
+              <Select
                 label='Tipo do serviço'
                 name='categoria'
                 value={postData.categoria}
@@ -177,9 +181,9 @@ export const Profile = () => {
                 <option value='pedreiro'>Pedreiro</option>
                 <option value='faxineiro'>Faxineiro</option>
               </Select>
-              <Input 
-                type='number' 
-                placeholder='R$0.00' 
+              <Input
+                type='number'
+                placeholder='R$0.00'
                 label='Preço'
                 name='preco'
                 value={postData.preco}
