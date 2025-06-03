@@ -1,0 +1,22 @@
+version: '3.9'
+
+services:
+  api:
+    build:
+      context: ./api/api-beeco
+    container_name: laravel_api
+    volumes:
+      - ./api/api-beeco:/var/www
+      - laravel_vendor:/var/www/vendor
+    ports:
+      - "8000:8000"
+    working_dir: /var/www
+    environment:
+      - DB_CONNECTION=sqlite
+      - DB_DATABASE=/var/www/database/database.sqlite
+      - APP_ENV=local
+    command: sh -c "touch /var/www/database/database.sqlite && composer install && php artisan migrate:fresh --force && php artisan serve --host=0.0.0.0 --port=8000"
+
+
+volumes:
+  laravel_vendor:
