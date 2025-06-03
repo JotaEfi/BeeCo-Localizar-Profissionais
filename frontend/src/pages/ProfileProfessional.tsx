@@ -1,18 +1,35 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Star } from 'lucide-react'
 import { SideMenu } from '@/components/SideMenu'
 import { CardComment } from '@/components/CardComment'
 import { comments } from '@/mock/Comments'
 import Button from '@/components/Button'
-import { Link } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
+import { getPostsById } from '@/api/postApi'
 
 export const ProfileProfessional = () => {
   const [rating, setRating] = useState(4)
   const [comment, setComment] = useState('')
+  const {id} = useParams<{ id: string }>()
 
   const handleRatingClick = (index: number) => {
     setRating(index + 1)
   }
+
+  const fetchPostById = async (id?: string) => {
+    try {
+      const {data} = await getPostsById(id)
+     
+      console.log('Post encontrado:', data)
+    } catch (error) {
+      console.error('Erro ao buscar post:', error)
+    }
+  }
+
+  useEffect(() => {
+    fetchPostById(id)
+    console.log('ID do profissional:', id)
+  })
 
   const handleCommentChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setComment(e.target.value)

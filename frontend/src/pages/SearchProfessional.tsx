@@ -3,10 +3,29 @@ import { Input } from '@/components/Input'
 import { ProfessionalCard } from '@/components/ProfessionalCard'
 import { SideMenu } from '@/components/SideMenu'
 import { Search, Filter } from 'lucide-react'
-import { DataProfessionals } from '@/mock/DataProfessionals'
 import { Link } from 'react-router-dom'
+import { useEffect, useState } from 'react'
+import { getPosts } from '@/api/postApi'
+import { PostResponse } from '@/types/postTypes'
 
 export const SearchProfessional = () => {
+
+  const [post, setPosts] = useState<PostResponse[]>([])
+  
+
+  useEffect(() => {
+    const fetchPosts = async () => {
+      try {
+        const response = await getPosts()
+        console.log('Posts recebidos:', response)
+        setPosts(response)
+      } catch (error) {
+        console.error('Erro ao buscar posts:', error)
+      }
+    }
+    fetchPosts()
+  }, [])
+
   return (
     <>
       <SideMenu />
@@ -27,11 +46,15 @@ export const SearchProfessional = () => {
         </div>
 
                 <div className="grid grid-cols-5 gap-6.5 min-w-[1580px]">
-                    {DataProfessionals.map((item, index) => (
-                      <Link to='/professional'>
+                    {post.map((item) => (
+                      <Link to={`/professional/${item.id}`} key={item.id}> 
                         <ProfessionalCard
-                            key={index}
-                            {...item} //pega todas as propriedades
+                          key={item.id}
+                          img={item.imagem}  
+                          name={item.user.nome}
+                          profession={item.categoria}
+                          valueService={item.preco}
+                          titulo={item.titulo}
                         />
                       
                       </Link>
