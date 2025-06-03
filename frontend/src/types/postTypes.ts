@@ -1,3 +1,5 @@
+import { userType } from "./userTypes";
+
 export interface Post {
     titulo: string;
     descricao: string;
@@ -5,4 +7,12 @@ export interface Post {
     tipo_postagem: string;
     preco: number;
     status: string;
+    imagem?: string
+}
+
+export interface PostResponse extends Post {
+    id: number;
+    user_id: number;
+    user: userType
+
 }

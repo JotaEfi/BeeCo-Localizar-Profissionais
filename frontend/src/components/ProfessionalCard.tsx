@@ -1,17 +1,19 @@
 import { Star } from 'lucide-react'
 
 interface ProfessionalCardProps {
+  id?: number
   img?: string
   name: string
   rate?: number
   profession?: string
   valueService?: number
+  titulo?: string
 }
 
 export const ProfessionalCard = ({
   img,
   name,
-  rate = 0,
+  titulo,
   profession = 'Profissional',
   valueService = 0,
 }: ProfessionalCardProps) => {
@@ -25,25 +27,24 @@ export const ProfessionalCard = ({
         />
       </figure>
       <div className='bg-gray-100/45 px-4 py-5 w-full flex flex-col items-start rounded-b-[10px] gap-2'>
-        <div className='flex justify-between items-center w-full'>
-          <h4 className='text-[1.3rem] font-semibold truncate max-w-[200px]'>
-            {name}
-          </h4>
-          <p className='flex gap-1 items-center'>
-            {rate.toFixed(1)}
-            <span>
-              <Star className='fill-yellow-400 text-yellow-400' size={20} />
-            </span>
-          </p>
+        <div className="flex items-center gap-2 w-full">
+          <div className='flex justify-between items-center w-full'>
+            <h4 className='text-[1.3rem] font-semibold truncate max-w-[200px]'>
+              {name}
+            </h4>
+          </div>
+          <div className='flex gap-2'>
+            <p className='text-[.8rem] border-[#fa9c058d] text-[#f9a826f0] border-[1px] font-semibold rounded-2xl px-2 py-1 w-auto bg-[#ffbf594a]'>
+              {profession}
+            </p>
+          </div>
         </div>
-        <div className='flex gap-2'>
-          <p className='text-[.8rem] border-[#fa9c058d] text-[#f9a826f0] border-[1px] font-semibold rounded-2xl px-2 py-1 w-auto bg-[#ffbf594a]'>
-            {profession}
-          </p>
+        <div>
+          <p>{titulo}</p>
         </div>
-        <div className='flex items-center justify-between w-full'>
+        <div className='flex items-center justify-end w-full'>
           <p className='font-semibold text-[1.3rem]'>
-            R${valueService.toFixed(2)}
+            R${valueService}
           </p>
         </div>
       </div>

@@ -63,6 +63,13 @@ export const SideMenu = () => {
               onClick={() => handleNavigation("/contracting")}
             />
             <SideMenuItem 
+              icon={<Search size={iconSize} />} 
+              label="Buscar Profissional" 
+              isOpen={isOpen} 
+              isActive={getActiveItem("/search")}
+              onClick={() => handleNavigation("/search")}
+            />
+            <SideMenuItem 
               icon={<Heart size={iconSize} />} 
               label="Favoritos" 
               isOpen={isOpen} 

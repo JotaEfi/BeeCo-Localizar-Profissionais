@@ -6,6 +6,8 @@ import { ProfessionalCard } from '@/components/ProfessionalCard'
 import { Link } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import { api } from '@/utlis/api'
+import { PostResponse } from '@/types/postTypes'
+import { getPosts } from '@/api/postApi'
 
 type Prestador = {
   id: number
@@ -16,19 +18,22 @@ type Prestador = {
 }
 
 export const Favorites = () => {
-  const [prestadores, setPrestadores] = useState<Prestador[]>([])
-
-  useEffect(() => {
-    api
-      .get('/users/type/prestador')
-      .then((res) => {
-        console.log('Prestadores recebidoss:', res.data)
-        setPrestadores(res.data.users)
-      })
-      .catch((err) => {
-        console.error('Erro ao buscar prestadores:', err)
-      })
-  }, [])
+   const [post, setPosts] = useState<PostResponse[]>([])
+    
+  
+    useEffect(() => {
+      const fetchPosts = async () => {
+        try {
+          const response = await getPosts()
+          console.log('Posts recebidos:', response)
+          setPosts(response)
+        } catch (error) {
+          console.error('Erro ao buscar posts:', error)
+        }
+      }
+      fetchPosts()
+    }, [])
+  
 
   return (
     <>
@@ -45,21 +50,24 @@ export const Favorites = () => {
           <h3 className='text-[1.3rem]'>Seus favoritos</h3>
         </div>
 
-        {prestadores.length === 0 ? (
+        {post.length === 0 ? (
           <p className='text-gray-500'>Nenhum prestador foi encontrado.</p>
         ) : (
-          <div className='grid grid-cols-5 gap-6.5 min-w-[1580px]'>
-            {prestadores.map((item) => (
-              <Link key={item.id} to='/professional'>
-                <ProfessionalCard
-                  img={item.foto_perfil || ''}
-                  name={item.nome}
-                  profession='Serviço'
-                  valueService={0}
-                />
-              </Link>
-            ))}
-          </div>
+          <div className="grid grid-cols-5 gap-6.5 min-w-[1580px]">
+                    {post.map((item) => (
+                      <Link to='/professional'> 
+                        <ProfessionalCard
+                          key={item.id}
+                          img={item.imagem}  
+                          name={item.user.nome}
+                          profession={item.categoria}
+                          valueService={item.preco}
+                          titulo={item.titulo}
+                        />
+                      
+                      </Link>
+                    ))}
+                </div>
         )}
       </section>
     </>
