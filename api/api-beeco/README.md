@@ -64,3 +64,278 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+# BeeCo API Documentation
+
+## Sobre o Projeto
+
+BeeCo é uma plataforma que conecta prestadores de serviços e contratantes. Esta API fornece todos os endpoints necessários para gerenciar usuários, serviços, negociações e avaliações.
+
+## Setup
+
+1. Clone o repositório
+2. Execute `composer install`
+3. Configure o arquivo `.env` com suas credenciais de banco de dados
+4. Execute `php artisan migrate` para criar as tabelas
+5. Execute `php artisan serve` para iniciar o servidor
+
+## Autenticação
+
+A API utiliza JWT (JSON Web Token) para autenticação. Para rotas protegidas, inclua o token no header:
+
+```
+Authorization: Bearer <seu_token_jwt>
+```
+
+## Endpoints da API
+
+### Autenticação
+
+#### Registro de Usuário
+```http
+POST /api/register
+```
+
+**Request:**
+```json
+{
+  "name": "João Silva",
+  "email": "joao@email.com",
+  "password": "senha123",
+  "tipo": "contratante"
+}
+```
+
+**Response:**
+```json
+{
+  "user": {
+    "id": 1,
+    "name": "João Silva",
+    "email": "joao@email.com",
+    "tipo": "contratante"
+  },
+  "token": "jwt_token_aqui"
+}
+```
+
+#### Login
+```http
+POST /api/login
+```
+
+**Request:**
+```json
+{
+  "email": "joao@email.com",
+  "password": "senha123"
+}
+```
+
+**Response:**
+```json
+{
+  "token": "jwt_token_aqui",
+  "user": {
+    "id": 1,
+    "name": "João Silva",
+    "email": "joao@email.com"
+  }
+}
+```
+
+### Usuários
+
+#### Obter Perfil do Usuário
+```http
+GET /api/user
+```
+
+**Response:**
+```json
+{
+  "id": 1,
+  "name": "João Silva",
+  "email": "joao@email.com",
+  "tipo": "contratante",
+  "endereco": {
+    "id": 1,
+    "logradouro": "Rua A",
+    "numero": "123",
+    "cidade": "São Paulo"
+  }
+}
+```
+
+#### Atualizar Perfil
+```http
+PUT /api/user
+```
+
+**Request:**
+```json
+{
+  "name": "João Silva Atualizado",
+  "email": "joao.novo@email.com"
+}
+```
+
+### Endereços
+
+#### Listar Endereços
+```http
+GET /api/enderecos
+```
+
+**Response:**
+```json
+[
+  {
+    "id": 1,
+    "logradouro": "Rua A",
+    "numero": "123",
+    "cidade": "São Paulo",
+    "estado": "SP"
+  }
+]
+```
+
+#### Criar Endereço
+```http
+POST /api/enderecos
+```
+
+**Request:**
+```json
+{
+  "cep": "01234-567",
+  "logradouro": "Rua B",
+  "numero": "456",
+  "cidade": "Rio de Janeiro",
+  "estado": "RJ"
+}
+```
+
+### Posts (Serviços)
+
+#### Listar Posts
+```http
+GET /api/posts
+```
+
+**Response:**
+```json
+[
+  {
+    "id": 1,
+    "titulo": "Preciso de encanador",
+    "descricao": "Vazamento na cozinha",
+    "user_id": 1,
+    "created_at": "2025-01-01T00:00:00.000000Z"
+  }
+]
+```
+
+#### Criar Post
+```http
+POST /api/posts
+```
+
+**Request:**
+```json
+{
+  "titulo": "Preciso de eletricista",
+  "descricao": "Instalação de ventilador",
+  "categoria": "eletrica"
+}
+```
+
+### Negociações
+
+#### Listar Negociações
+```http
+GET /api/negociacao
+```
+
+**Response:**
+```json
+[
+  {
+    "id": 1,
+    "post_id": 1,
+    "prestador_id": 2,
+    "valor": 150.00,
+    "status": "pendente",
+    "created_at": "2025-01-01T00:00:00.000000Z"
+  }
+]
+```
+
+#### Criar Negociação
+```http
+POST /api/negociacao
+```
+
+**Request:**
+```json
+{
+  "post_id": 1,
+  "prestador_id": 2,
+  "valor": 150.00,
+  "observacoes": "Disponível amanhã"
+}
+```
+
+### Avaliações
+
+#### Criar Avaliação
+```http
+POST /api/avaliacoes
+```
+
+**Request:**
+```json
+{
+  "avaliado_id": 2,
+  "nota": 5,
+  "comentario": "Serviço excelente, recomendo!",
+  "tarefa_id": 1
+}
+```
+
+**Response:**
+```json
+{
+  "id": 1,
+  "nota": 5,
+  "comentario": "Serviço excelente, recomendo!",
+  "avaliador_id": 1,
+  "avaliado_id": 2,
+  "created_at": "2025-01-01T00:00:00.000000Z"
+}
+```
+
+## Status Codes
+
+A API retorna os seguintes códigos de status:
+
+| Status Code | Descrição |
+| :--- | :--- |
+| 200 | `OK` - Requisição bem sucedida |
+| 201 | `CREATED` - Recurso criado com sucesso |
+| 400 | `BAD REQUEST` - Requisição inválida |
+| 401 | `UNAUTHORIZED` - Não autorizado |
+| 404 | `NOT FOUND` - Recurso não encontrado |
+| 500 | `INTERNAL SERVER ERROR` - Erro no servidor |
+
+## Rate Limiting
+
+As requisições são limitadas a 60 por minuto por IP.
+
+## Suporte
+
+Para suporte, envie um email para support@beeco.com
+
+## License
+
+[MIT License](LICENSE.md)
