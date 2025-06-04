@@ -5,6 +5,7 @@ import { Select } from '@/components/Select'
 import { SideMenu } from '@/components/SideMenu'
 import { Textarea } from '@/components/TextArea'
 import { useUser } from '@/contexts/UserContext'
+import { domesticProfessions } from '@/mock/DomesticProfession'
 import { Post } from '@/types/postTypes'
 import { useState } from 'react'
 
@@ -178,8 +179,11 @@ export const Profile = () => {
                 onChange={handlePostChange}
               >
                 <option value=''>Selecione uma categoria</option>
-                <option value='pedreiro'>Pedreiro</option>
-                <option value='faxineiro'>Faxineiro</option>
+                {domesticProfessions.map((profession: {id: number, name: string}) => (
+                  <option key={profession.id} value={profession.name.toLowerCase()}>
+                    {profession.name}
+                  </option>
+                ))}
               </Select>
               <Input
                 type='number'
