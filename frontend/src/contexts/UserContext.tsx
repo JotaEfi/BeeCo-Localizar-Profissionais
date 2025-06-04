@@ -3,6 +3,11 @@ import { getUserData, updateUserData } from '@/api/userApi'
 import { getUserType } from '@/utlis/auth'
 
 interface UserData {
+  img: any
+  categoria: string
+  titulo: string
+  preco: any
+  descricao: string
   nome: string
   email: string
   telefone: string

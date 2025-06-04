@@ -165,7 +165,7 @@ export const Profile = () => {
               />
               <Textarea
                 label='Descrição do serviço'
-                placeholder='Detalhe como é seu serviço...'
+                placeholder='Fale sobre você e o seu serviço'
                 className='min-h-[100px]'
                 name='descricao'
                 value={postData.descricao}
@@ -180,6 +180,24 @@ export const Profile = () => {
                 <option value=''>Selecione uma categoria</option>
                 <option value='pedreiro'>Pedreiro</option>
                 <option value='faxineiro'>Faxineiro</option>
+                <option value='eletricista'>Eletricista</option>
+                <option value='encanador'>Encanador</option>
+                <option value='jardineiro'>Jardineiro</option>
+                <option value='pintor'>Pintor</option>
+                <option value='babá'>Babá</option>
+                <option value='cozinheiro'>Cozinheiro</option>
+                <option value='diarista'>Diarista</option>
+                <option value='cuidador'>Cuidador de Idosos</option>
+                <option value='lavadeira'>Lavadeira</option>
+                <option value='passadeira'>Passadeira</option>
+                <option value='zelador'>Zelador</option>
+                <option value='montador'>Montador de Móveis</option>
+                <option value='vidraceiro'>Vidraceiro</option>
+                <option value='marceneiro'>Marceneiro</option>
+                <option value='carpinteiro'>Carpinteiro</option>
+                <option value='reparos'>Serviços Gerais de Reparos</option>
+                <option value='limpeza-piscina'>Limpeza de Piscina</option>
+                <option value='dedetizador'>Dedetizador</option>
               </Select>
               <Input
                 type='number'
@@ -238,13 +256,13 @@ export const Profile = () => {
           <div className='max-w-4xl'>
             <div className='flex justify-between items-center mb-8'>
               <h2 className=' text-xl'>{titleContent}</h2>
-              <Button
+              {/*<Button
                 variant='outline'
                 size='sm'
                 onClick={() => setIsEditing(!isEditing)}
               >
                 {isEditing ? 'Cancelar' : 'Editar'}
-              </Button>
+              </Button>*/}
             </div>
             {renderMenuContent()}
           </div>
