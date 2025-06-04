@@ -1,4 +1,10 @@
-import { createContext, useContext, useState, useEffect, ReactNode } from 'react'
+import {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  ReactNode,
+} from 'react'
 import { getUserData, updateUserData } from '@/api/userApi'
 import { getUserType } from '@/utlis/auth'
 
@@ -33,6 +39,11 @@ const UserContext = createContext<UserContextType | undefined>(undefined)
 
 export const UserProvider = ({ children }: { children: ReactNode }) => {
   const [userData, setUserDataState] = useState<UserData>({
+    img: null,
+    categoria: '',
+    titulo: '',
+    preco: 0,
+    descricao: '',
     nome: '',
     email: '',
     telefone: '',
@@ -48,7 +59,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
   const [loading, setLoading] = useState(true)
 
   const setUserData = (data: Partial<UserData>) => {
-    setUserDataState(prev => ({ ...prev, ...data }))
+    setUserDataState((prev) => ({ ...prev, ...data }))
   }
 
   const updateUser = async (data: Partial<UserData>) => {
@@ -64,7 +75,6 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
   }
 
   const refreshUserData = async () => {
-    
     try {
       setLoading(true)
       const response = await getUserData()
@@ -81,7 +91,9 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
   }, [])
 
   return (
-    <UserContext.Provider value={{ userData, setUserData, updateUser, loading, refreshUserData }}>
+    <UserContext.Provider
+      value={{ userData, setUserData, updateUser, loading, refreshUserData }}
+    >
       {children}
     </UserContext.Provider>
   )

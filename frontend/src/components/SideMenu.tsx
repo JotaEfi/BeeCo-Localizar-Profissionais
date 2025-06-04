@@ -88,6 +88,7 @@ export const SideMenu = () => {
               isOpen={isOpen}
               isActive={getActiveItem('/favorites')}
               onClick={() => handleNavigation('/favorites')}
+              
             />
           </>
         )}
