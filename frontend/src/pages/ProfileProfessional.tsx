@@ -1,16 +1,17 @@
 import { useEffect, useState } from 'react'
-import { Star } from 'lucide-react'
+import { Star, Heart } from 'lucide-react'
 import { SideMenu } from '@/components/SideMenu'
 import { CardComment } from '@/components/CardComment'
 import { comments } from '@/mock/Comments'
 import Button from '@/components/Button'
-import { Link, useParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import { getPostsById } from '@/api/postApi'
 
 export const ProfileProfessional = () => {
   const [rating, setRating] = useState(4)
   const [comment, setComment] = useState('')
   const [post, setPost] = useState<any>(null)
+  const [isFavorited, setIsFavorited] = useState(false)
   const { id } = useParams<{ id: string }>()
 
   const handleRatingClick = (index: number) => {
@@ -41,6 +42,11 @@ export const ProfileProfessional = () => {
     setComment('')
   }
 
+  const handleFavorite = () => {
+    setIsFavorited((prev) => !prev)
+    console.log('Favorito:', !isFavorited)
+  }
+
   const [reviewStartIdx, setReviewStartIdx] = useState(0)
   const reviewsPerPage = 3
   const totalReviews = comments.length
@@ -65,20 +71,17 @@ export const ProfileProfessional = () => {
           {/* Galeria */}
           <div className='w-full flex gap-2'>
             <div className='w-1/3'>
-              <img
-                src='https://images.unsplash.com/photo-1506744038136-46273834b3fb'
-                alt='Obra 1'
-                className='object-cover rounded-md w-full h-full'
-              />
+              <div className='flex items-center justify-center bg-gray-200 rounded-md w-full h-full text-gray-500 text-center p-4'>
+                Obra 1
+              </div>
             </div>
             <div className='w-2/3 grid grid-cols-3 gap-2'>
               {Array.from({ length: 6 }).map((_, i) => (
-                <div key={i} className='h-48'>
-                  <img
-                    src={`https://source.unsplash.com/random/300x200?sig=${i}`}
-                    alt={`Obra ${i + 2}`}
-                    className='object-cover rounded-md h-full w-full'
-                  />
+                <div
+                  key={i}
+                  className='h-48 flex items-center justify-center bg-gray-200 rounded-md text-gray-500 text-center p-4'
+                >
+                  Obra {i + 2}
                 </div>
               ))}
             </div>
@@ -92,10 +95,20 @@ export const ProfileProfessional = () => {
                 alt={post?.user?.nome || 'Profissional'}
                 className='w-14 h-14 rounded-full object-cover border-2 border-white shadow'
               />
-              <div>
-                <h2 className='text-2xl font-bold text-dark-gray flex items-center gap-2'>
+              <div className='flex items-center gap-25'>
+                <h2 className='text-2xl font-bold text-dark-gray'>
                   {post?.user?.nome || 'Nome do profissional'}
                 </h2>
+                <button onClick={handleFavorite}>
+                  <Heart
+                    size={24}
+                    className={`transition-colors ${
+                      isFavorited
+                        ? 'fill-[#FFC75A] text-yellow-500'
+                        : 'text-gray-400 hover:text-[#ffc85adf]'
+                    }`}
+                  />
+                </button>
               </div>
             </div>
 
@@ -118,9 +131,20 @@ export const ProfileProfessional = () => {
             </div>
 
             <div className='w-[300px]'>
-              <Button as={Link} to='/chat'>
-                Entrar em contato
-              </Button>
+              {post?.user?.telefone && (
+                <a
+                  href={`https://wa.me/55${post.user.telefone.replace(
+                    /\D/g,
+                    ''
+                  )}?text=${encodeURIComponent(
+                    `Olá, vi seu perfil no site da Beeco e gostaria de saber mais sobre o serviço "${post?.titulo}". Podemos conversar para um possível contrato?`
+                  )}`}
+                  target='_blank'
+                  rel='noopener noreferrer'
+                >
+                  <Button>Entrar em contato</Button>
+                </a>
+              )}
             </div>
           </section>
 
