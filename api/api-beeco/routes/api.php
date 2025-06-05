@@ -43,13 +43,17 @@ Route::middleware('auth:api')->group(function () {
     Route::get('/profissoes', [\App\Http\Controllers\ProfissaoController::class, 'index']);
     Route::post('/profissoes', [\App\Http\Controllers\ProfissaoController::class, 'store']);
 
-});
-  
-  // Favoritos
+      // Favoritos
     Route::get('/favoritos', [\App\Http\Controllers\FavoritoController::class, 'index']);
     Route::post('/favoritos', [\App\Http\Controllers\FavoritoController::class, 'store']);
     Route::delete('/favoritos/{prestador_id}', [\App\Http\Controllers\FavoritoController::class, 'destroy']);
+  
 
+
+    });
+
+    
+  
  // Endereços
     Route::get('/enderecos', [EnderecoController::class, 'index']);
     Route::post('/enderecos', [EnderecoController::class, 'store']);
