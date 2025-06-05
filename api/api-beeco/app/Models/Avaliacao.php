@@ -3,32 +3,30 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Avaliacao extends Model
 {
+    use HasFactory;
+
     protected $table = 'avaliacoes';
-    protected $primaryKey = 'id_avaliacao';
-    public $incrementing = true;
 
     protected $fillable = [
-        'descricao', 'nota', 'id_prestador', 'id_contratante', 'id_contrato'
+        'prestador_id',
+        'contratante_id',
+        'nota',
+        'comentario',
+        'tipo',
     ];
 
-    // Relacionamento: Uma avaliação pertence a um prestador
+    // Relacionamentos
     public function prestador()
     {
-        return $this->belongsTo(Prestador::class, 'id_prestador', 'id_prestador');
+        return $this->belongsTo(Users::class, 'prestador_id');
     }
 
-    // Relacionamento: Uma avaliação pertence a um contratante
     public function contratante()
     {
-        return $this->belongsTo(Contratante::class, 'id_contratante', 'id_contratante');
-    }
-
-    // Relacionamento: Uma avaliação pertence a um contrato (opcional)
-    public function contrato()
-    {
-        return $this->belongsTo(Contrato::class, 'id_contrato', 'id_contrato');
+        return $this->belongsTo(Users::class, 'contratante_id');
     }
 }
