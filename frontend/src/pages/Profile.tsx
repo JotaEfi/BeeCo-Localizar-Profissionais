@@ -19,11 +19,9 @@ export const Profile = () => {
   })
 
   const { userData, updateUser } = useUser()
-
   const [activeMenu, setActiveMenu] = useState('Informações pessoais')
   const [titleContent, setTitleContent] = useState('Informações pessoais')
   const [tempUserData, setTempUserData] = useState(userData)
-
   const [modalOpen, setModalOpen] = useState(false)
   const [modalMessage, setModalMessage] = useState('')
 
@@ -47,10 +45,19 @@ export const Profile = () => {
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
-    const { name, value, type } = e.target
+    const { name, value, type, files } = e.target as HTMLInputElement
 
     if (type === 'radio') {
       updateUser({ sexo: value })
+    } else if (type === 'file' && files && files[0]) {
+      const reader = new FileReader()
+      reader.onloadend = () => {
+        setTempUserData((prev) => ({
+          ...prev,
+          foto_perfil: reader.result as string,
+        }))
+      }
+      reader.readAsDataURL(files[0])
     } else {
       setTempUserData((prev) => ({
         ...prev,
@@ -87,7 +94,7 @@ export const Profile = () => {
       !postData.descricao.trim()
     ) {
       setModalMessage(
-        'Preencha corretamente os campos. Título até 100 caracteres e descrição até 500.'
+        'Preencha corretamente os campos.'
       )
       setModalOpen(true)
       return
@@ -143,14 +150,26 @@ export const Profile = () => {
                 maxLength={13}
                 onChange={handleChange}
               />
-              <Input
-                label='Localização'
-                placeholder='Localização'
-                value={tempUserData.localizacao}
-                name='localizacao'
-                maxLength={100}
-                onChange={handleChange}
-              />
+              <div className='mb-4'>
+                <label className='block mb-1 text-sm text-gray-700'>
+                  Foto de Perfil
+                </label>
+                <input
+                  type='file'
+                  accept='image/*'
+                  name='foto_perfil'
+                  onChange={handleChange}
+                  className='w-full border border-gray-300 rounded-md px-5 py-2 text-base focus:outline-none focus:ring-2focus:border-transparent'
+                />
+                {tempUserData.foto_perfil && (
+                  <img
+                    src={tempUserData.foto_perfil}
+                    alt='Preview'
+                    className='mt-2 w-24 h-24 object-cover rounded-full border'
+                  />
+                )}
+              </div>
+
               <Input
                 label='CPF'
                 placeholder='***.***.***-**'
@@ -256,6 +275,38 @@ export const Profile = () => {
                 min='0'
                 step='0.01'
               />
+
+              {/*<div className='mb-4'>
+                <label className='block mb-1 text-sm text-gray-700'>
+                  Imagens dos serviços
+                </label>
+                <input
+                  type='file'
+                  accept='image/*'
+                  onChange={(e) => {
+                    const file = e.target.files?.[0]
+                    if (file) {
+                      const reader = new FileReader()
+                      reader.onloadend = () => {
+                        setPostData((prev) => ({
+                          ...prev,
+                          imagem: reader.result as string,
+                        }))
+                      }
+                      reader.readAsDataURL(file)
+                    }
+                  }}
+                  className='w-full border border-gray-300 rounded-md px-5 py-2 text-base focus:outline-none focus:ring-2 focus:border-transparent'
+                />
+                {postData.imagem && (
+                  <img
+                    src={postData.imagem}
+                    alt='Preview'
+                    className='mt-2 w-24 h-24 object-cover rounded-md border'
+                  />
+                )}
+              </div>*/}
+
               <Button type='submit' className='mt-4'>
                 Criar Serviço
               </Button>
@@ -308,14 +359,13 @@ export const Profile = () => {
         </div>
       </div>
 
-      {/* Modal */}
       {modalOpen && (
-        <div className='fixed inset-0 flex items-center justify-center backdrop-blur bg-opacity-50 z-50'>
-          <div className='bg-white px-4 py-6 rounded-lg shadow-md max-w-md w-full text-center'>
-            <p className='mb-4 text-gray-800'>{modalMessage}</p>
+        <div className='fixed inset-0 z-50 flex items-center justify-center backdrop-blur bg-opacity-50'>
+          <div className='bg-white rounded-lg shadow-lg p-6 max-w-sm text-center'>
+            <p className='text-gray-800 mb-4'>{modalMessage}</p>
             <button
               onClick={closeModal}
-              className='bg-[#FFC75A] text-white px-4 py-2 rounded hover:bg-[#ffc85ae8] transition cursor-pointer'
+              className='bg-[#FFC75A] text-white px-4 py-2 rounded hover:bg-[#ffc85acb] transition cursor-pointer'
             >
               Fechar
             </button>
