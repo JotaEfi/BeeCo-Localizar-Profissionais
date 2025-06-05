@@ -3,22 +3,28 @@ import { Input } from '@/components/Input'
 import Button from '@/components/Button'
 import { Search } from 'lucide-react'
 import { ProfessionalCard } from '@/components/ProfessionalCard'
-import { Link } from 'react-router-dom'
 import { useEffect, useState } from 'react'
-import { PostResponse } from '@/types/postTypes'
-import { getPosts } from '@/api/postApi'
+import { getFavorites } from '@/api/favApi'
+import { FavoriteResponse } from '@/types/favTypes'
 
 export const Favorites = () => {
-   const [post, setPosts] = useState<PostResponse[]>([])
+   const [favorites, setFavorites] = useState<FavoriteResponse[]>([])
   
     useEffect(() => {
       const fetchPosts = async () => {
         try {
-          const response = await getPosts()
+          const response = await getFavorites()
           console.log('Posts recebidos:', response)
-          setPosts(response)
+          // Verificar se a resposta tem a estrutura esperada
+          if (response && response.favoritos && Array.isArray(response.favoritos)) {
+            setFavorites(response.favoritos)
+          } else {
+            console.error('Formato de resposta inesperado:', response)
+            setFavorites([])
+          }
         } catch (error) {
           console.error('Erro ao buscar posts:', error)
+          setFavorites([])
         }
       }
       fetchPosts()
@@ -40,20 +46,17 @@ export const Favorites = () => {
           <h3 className='text-[1.3rem]'>Seus favoritos</h3>
         </div>
 
-        {post.length === 0 ? (
+        {favorites.length === 0 ? (
           <p className='text-gray-500'>Nenhum prestador foi encontrado.</p>
         ) : (
           <div className="grid grid-cols-5 gap-6.5 min-w-[1580px]">
-                    {post.map((item) => (
-                      <Link to={`/professional/${item.id}`} key={item.id}> 
+                    {favorites.map((favorite) => (
                         <ProfessionalCard
-                          img={item.imagem}  
-                          name={item.user.nome}
-                          profession={item.categoria}
-                          valueService={item.preco}
-                          titulo={item.titulo}
+                          key={favorite.id_favorito}
+                          name={favorite.prestador?.nome || "Nome não disponível"}
+                          img={favorite.prestador?.foto_perfil}
+                          id={favorite.id_prestador}
                         />
-                      </Link>
                     ))}
                 </div>
         )}
