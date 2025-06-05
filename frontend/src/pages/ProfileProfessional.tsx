@@ -11,11 +11,12 @@ import { rateTypes, ReviewTypes } from '@/types/rateTypes'
 import { useUser } from '@/contexts/UserContext'
 import toast, { Toaster } from 'react-hot-toast'
 import { getCookie } from '@/utlis/cookies'
+import { PostResponse } from '@/types/postTypes'
 
 export const ProfileProfessional = () => {
   const [rating, setRating] = useState(0)
   const [comment, setComment] = useState('')
-  const [post, setPost] = useState<any>(null)
+  const [post, setPost] = useState<PostResponse>()
   const [isFavorited, setIsFavorited] = useState(false)
   const { id } = useParams<{ id: string }>()
   const [submitting, setSubmitting] = useState(false)
@@ -46,7 +47,6 @@ export const ProfileProfessional = () => {
     try {
       const { data } = await getPostsById(id)
       console.log('Post encontrado:', data)
-      setPost(data)
       setPost(data)
     } catch (error) {
       console.error('Erro ao buscar post:', error)
@@ -146,7 +146,7 @@ export const ProfileProfessional = () => {
           <div className='w-full flex gap-2'>
             <div className='w-1/3'>
               <div className='flex items-center justify-center bg-gray-200 rounded-md w-full h-full text-gray-500 text-center p-4'>
-                Obra 1
+                {post?.imagem}
               </div>
             </div>
             <div className='w-2/3 grid grid-cols-3 gap-2'>
@@ -165,7 +165,7 @@ export const ProfileProfessional = () => {
           <section className='w-full flex flex-col gap-4'>
             <div className='flex items-center gap-4'>
               <img
-                src={post?.user?.foto_perfil || '/default-avatar.png'}
+                src={post?.user.foto_perfil || '/default-avatar.png'}
                 alt={post?.user?.nome || 'Profissional'}
                 className='w-14 h-14 rounded-full object-cover border-2 border-white shadow'
               />
