@@ -12,13 +12,24 @@ export const createPost = async (postData: Post) => {
   }
 }
 
-export const getPosts = async (): Promise<Post[]> => {
+export const getPosts = async () => {
   try {
-    const response = await api.get('/posts')
-    console.log('Posts obtidos com sucesso:', response.data)
-    return response.data
+    const {data} = await api.get('/posts')
+    console.log('Posts recebidos:', data)
+    return data
   } catch (error) {
-    console.error('Erro ao obter posts:', error)
+    console.error('Erro ao buscar posts:', error)
+    throw error
+  }
+}
+
+export const getPostsById = async (id?: string) => {
+  try {
+    const data = await api.get(`/posts/${id}`)
+    console.log('Post recebidos:', data)
+    return data
+  } catch (error) {
+    console.error('Erro ao buscar posts:', error)
     throw error
   }
 }

@@ -51,7 +51,7 @@ function App() {
               <Favorites />
             </ProtectedRoute>
           } />
-          <Route path='/professional' element={
+          <Route path='/professional/:id' element={
             <ProtectedRoute allowedUserTypes={['contratante']}>
               <ProfileProfessional/>
             </ProtectedRoute>

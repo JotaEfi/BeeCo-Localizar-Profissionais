@@ -3,13 +3,28 @@ import Professionals from '@/assets/professionals.png'
 import Profissionals2 from '@/assets/professionals2.png'
 import Button from '@/components/Button'
 import { ProfessionalCard } from '@/components/ProfessionalCard'
-import { DataProfessionals } from '@/mock/DataProfessionals'
 import { Link, useNavigate } from 'react-router-dom'
 import { ServiceCard } from '@/components/ServiceCard'
 import { services } from '@/mock/DataServiceCards'
+import { PostResponse } from '@/types/postTypes'
+import { useEffect, useState } from 'react'
+import { getPosts } from '@/api/postApi'
 
 export const ContractingArea = () => {
   const navigate = useNavigate()
+  const [post, setPosts] = useState<PostResponse[]>([])
+
+  useEffect(() => {
+      const fetchPosts = async () => {
+        try {
+          const response = await getPosts()
+          setPosts(response)
+        } catch (error) {
+          console.error('Erro ao buscar posts:', error)
+        }
+      }
+      fetchPosts()
+    }, [])
 
   const navigateToSearch = () => {
     navigate('/search')
@@ -63,9 +78,16 @@ export const ContractingArea = () => {
               </div>
             </div>
             <div className='flex justify-between flex-wrap '>
-              {DataProfessionals.slice(0, 3).map((item, index) => (
-                  <Link to='/professional'>
-                    <ProfessionalCard key={index} {...item} />
+              {post.slice(0, 3).map((post) => (
+                  <Link to={`/professional/${post.id}`} key={post.id}>
+                    <ProfessionalCard
+                      img={post.imagem}
+                      name={post.user.nome}
+                      profession={post.categoria}
+                      valueService={post.preco}
+                      titulo={post.titulo}
+                      id={post.id}
+                    />
                   </Link>
 
               ))}

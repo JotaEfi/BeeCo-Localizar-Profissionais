@@ -29,19 +29,17 @@ class PostController extends Controller
             'tipo_postagem' => 'required|in:contratante,prestador',
             'preco' => 'nullable|numeric',
             'categoria' => 'nullable|string',
-            'imagem' => 'nullable|string', 
+            'imagem' => 'nullable|image|max:2048', // Aceita arquivo de imagem
         ]);
 
-       
-        $post = Post::create([
-            'user_id' => Auth::id(), 
-            'titulo' => $request->titulo,
-            'descricao' => $request->descricao,
-            'tipo_postagem' => $request->tipo_postagem,
-            'preco' => $request->preco,
-            'categoria' => $request->categoria,
-            'imagem' => $request->imagem, 
-        ]);
+        $data = $request->only(['titulo', 'descricao', 'tipo_postagem', 'preco', 'categoria']);
+        $data['user_id'] = Auth::id();
+
+        if ($request->hasFile('imagem')) {
+            $data['imagem'] = $request->file('imagem')->store('posts', 'public');
+        }
+
+        $post = Post::create($data);
 
         return response()->json($post, 201);
     }
@@ -61,23 +59,22 @@ class PostController extends Controller
             'tipo_postagem' => 'required|in:contratante,prestador',
             'preco' => 'nullable|numeric',
             'categoria' => 'nullable|string',
-            'imagem' => 'nullable|string', 
+            'imagem' => 'nullable|image|max:2048',
         ]);
 
-        $post = Post::findOrFail($id); 
+        $post = Post::findOrFail($id);
 
         if ($post->user_id !== Auth::id()) {
             return response()->json(['message' => 'Unauthorized'], 403);
         }
 
-        $post->update([
-            'titulo' => $request->titulo,
-            'descricao' => $request->descricao,
-            'tipo_postagem' => $request->tipo_postagem,
-            'preco' => $request->preco,
-            'categoria' => $request->categoria,
-            'imagem' => $request->imagem, 
-        ]);
+        $data = $request->only(['titulo', 'descricao', 'tipo_postagem', 'preco', 'categoria']);
+
+        if ($request->hasFile('imagem')) {
+            $data['imagem'] = $request->file('imagem')->store('posts', 'public');
+        }
+
+        $post->update($data);
 
         return response()->json($post);
     }
