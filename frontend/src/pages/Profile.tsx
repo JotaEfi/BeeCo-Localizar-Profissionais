@@ -152,6 +152,14 @@ export const Profile = () => {
                 maxLength={13}
                 onChange={handleChange}
               />
+                <Input
+                  label='CPF'
+                  placeholder='***.***.***-**'
+                  value={tempUserData.cpf}
+                  name='cpf'
+                  maxLength={14}
+                  onChange={handleChange}
+                />
               <div className='mb-4'>
                 <label className='block mb-1 text-sm text-gray-700'>
                   Foto de Perfil
@@ -172,14 +180,6 @@ export const Profile = () => {
                 )}
               </div>
 
-              <Input
-                label='CPF'
-                placeholder='***.***.***-**'
-                value={tempUserData.cpf}
-                name='cpf'
-                maxLength={14}
-                onChange={handleChange}
-              />
               <Input
                 label='Data de nascimento'
                 placeholder='YYYY-MM-DD'

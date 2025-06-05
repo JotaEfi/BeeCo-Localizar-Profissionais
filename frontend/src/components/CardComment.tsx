@@ -1,6 +1,7 @@
 import { Star } from 'lucide-react'
 
 interface CardCommentProps {
+  img_perfil?: string
   name: string
   profession: string
   rating: number
@@ -12,13 +13,18 @@ export const CardComment = ({
   profession, 
   rating, 
   comment,
+  img_perfil,
 }: CardCommentProps) => {
   return (
-    <div className="rounded-[16px] border border-gray-200 p-6 shadow-sm max-w-[400px] w-full">
-      <div className="flex items-center gap-4">
+    <div className="rounded-[16px] border border-[#FFC75A] p-6 shadow-sm transition-all hover:shadow-lg min-w-[400px] max-w-[600px] w-full border-[#FFC75A] bg-white">
+      <div className="flex items-center gap-4 ">
         <div className="w-[50px] h-[50px] rounded-full overflow-hidden bg-gray-500">
             <div className="w-full h-full flex items-center justify-center text-white text-[1rem] font-bold">
-                {name.charAt(0)}
+              {img_perfil ? (
+                <img src={img_perfil} alt={name} className="w-full h-full object-cover" />
+              ) : (
+                <span>{name.charAt(0).toUpperCase()}</span>
+              )}
             </div>
         </div>
         

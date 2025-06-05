@@ -6,8 +6,8 @@ import { comments } from '@/mock/Comments'
 import Button from '@/components/Button'
 import { useParams } from 'react-router-dom'
 import { getPostsById } from '@/api/postApi'
-import { createRate } from '@/api/rateApi'
-import { rateTypes } from '@/types/rateTypes'
+import { createRate, getRates } from '@/api/rateApi'
+import { rateTypes, ReviewTypes } from '@/types/rateTypes'
 import { useUser } from '@/contexts/UserContext'
 import toast, { Toaster } from 'react-hot-toast'
 import { getCookie } from '@/utlis/cookies'
@@ -21,6 +21,22 @@ export const ProfileProfessional = () => {
   const [submitting, setSubmitting] = useState(false)
   const { userData } = useUser()
   const userId = getCookie('id')
+  const [review, setReview] = useState<ReviewTypes[]>([])
+  const userLoggedIn = useUser()
+  
+    useEffect(() => {
+      const fetchReviews = async () => {
+        try {
+          
+          const response = await getRates()
+          console.log('Avaliações recebidas:', response)
+          setReview(response)
+        } catch (error) {
+          console.error('Erro ao buscar avaliações:', error)
+        }
+      }
+      fetchReviews() 
+    }, [])
 
   const handleRatingClick = (index: number) => {
     setRating(index + 1)
@@ -149,7 +165,7 @@ export const ProfileProfessional = () => {
           <section className='w-full flex flex-col gap-4'>
             <div className='flex items-center gap-4'>
               <img
-                src='https://randomuser.me/api/portraits/men/32.jpg'
+                src={post?.user?.foto_perfil || '/default-avatar.png'}
                 alt={post?.user?.nome || 'Profissional'}
                 className='w-14 h-14 rounded-full object-cover border-2 border-white shadow'
               />
@@ -207,20 +223,6 @@ export const ProfileProfessional = () => {
                   <Button>Entrar em contato</Button>
                 </a>
               )}
-              {post?.user?.telefone && (
-                <a
-                  href={`https://wa.me/55${post.user.telefone.replace(
-                    /\D/g,
-                    ''
-                  )}?text=${encodeURIComponent(
-                    `Olá, vi seu perfil no site da Beeco e gostaria de saber mais sobre o serviço "${post?.titulo}". Podemos conversar para um possível contrato?`
-                  )}`}
-                  target='_blank'
-                  rel='noopener noreferrer'
-                >
-                  <Button>Entrar em contato</Button>
-                </a>
-              )}
             </div>
           </section>
 
@@ -228,14 +230,13 @@ export const ProfileProfessional = () => {
           <section className='w-full'>
             <h2 className='text-xl font-semibold text-dark-gray border-b border-gray-200 pb-4'>
               Comentários
-              Comentários
             </h2>
 
             <div className='pt-6'>
               <div className='flex'>
                 <div className='mr-4'>
-                  <div className='w-12 h-12 rounded-full bg-yellow-400'>
-                    {userData?.nome && userData.nome.charAt(0).toUpperCase()}
+                  <div className=' object-cover rounded-full bg-yellow-400'>
+                    <img className='object-cover w-12 h-12 rounded-full' src={userLoggedIn.userData.foto_perfil} alt="" />
                   </div>
                 </div>
 
@@ -293,7 +294,7 @@ export const ProfileProfessional = () => {
             <div className='mb-6 flex items-center justify-between'>
               <div>
                 <h2 className='text-2xl font-semibold text-gray-700'>
-                  Suas avaliações
+                  Avaliações
                 </h2>
                 <p className='text-gray-400 text-base mt-1'>
                   Confira o que as pessoas estão comentando sobre você!
@@ -316,16 +317,20 @@ export const ProfileProfessional = () => {
             </div>
 
             <div className='grid grid-cols-3 gap-6'>
-              {comments
+              {review
                 .slice(reviewStartIdx, reviewStartIdx + reviewsPerPage)
-                .map((comment) => (
-                  <CardComment
-                    key={comment.name}
-                    name={comment.name}
-                    profession={comment.profession}
-                    rating={comment.rating}
-                    comment={comment.comment}
-                  />
+                .map((review) => (
+                  <div
+                    key={review.id }
+                  >
+                    <CardComment
+                      img_perfil={review.contratante.foto_perfil }
+                      name={review.contratante.nome? review.contratante.nome : 'Anônimo'}
+                      profession={review.contratante.tipo || 'Profissional'}
+                      rating={review.nota}
+                      comment={review.nota === 0 ? 'Nenhum comentário' : review.comentario || 'Sem comentário'}
+                    />
+                  </div>
                 ))}
             </div>
           </section>

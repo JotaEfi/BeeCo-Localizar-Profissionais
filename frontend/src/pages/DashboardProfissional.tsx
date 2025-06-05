@@ -3,16 +3,32 @@ import { CardComment } from '@/components/CardComment'
 import { comments } from '@/mock/Comments'
 import { useEffect, useState } from 'react'
 import { useUser } from '@/contexts/UserContext'
+import { getRates } from '@/api/rateApi'
+import { ReviewTypes } from '@/types/rateTypes'
 
 export const DashboardProfissional = () => {
   const { userData, refreshUserData } = useUser()
   const [reviewStartIdx, setReviewStartIdx] = useState(0)
   const reviewsPerPage = 3
   const totalReviews = comments.length
+  const [review, setReview] = useState<ReviewTypes[]>([])
 
   useEffect(() => {
+    const fetchReviews = async () => {
+      try {
+        
+        const response = await getRates()
+        console.log('Avaliações recebidas:', response)
+        setReview(response)
+      } catch (error) {
+        console.error('Erro ao buscar avaliações:', error)
+      }
+    }
+    fetchReviews() 
     refreshUserData()
   }, [])
+
+
 
   const handlePrev = () => {
     setReviewStartIdx((prev) =>
@@ -89,22 +105,19 @@ export const DashboardProfissional = () => {
               </div>
             </div>
             <div className='flex gap-6 flex-wrap'>
-              {comments
+              {review
                 .slice(reviewStartIdx, reviewStartIdx + reviewsPerPage)
-                .map((comment, idx) => (
+                .map((review) => (
                   <div
-                    key={comment.name + idx}
-                    className={
-                      idx === 0 && reviewStartIdx === 0
-                        ? 'border-2 border-[#FFC75A] bg-white rounded-[16px] shadow-sm'
-                        : ''
-                    }
+                    key={review.id }
+                    className='border-2 border-[#FFC75A] bg-white rounded-[16px] shadow-sm'
                   >
                     <CardComment
-                      name={comment.name}
-                      profession={comment.profession}
-                      rating={comment.rating}
-                      comment={comment.comment}
+                      img_perfil={review.contratante.foto_perfil }
+                      name={review.contratante.nome? review.contratante.nome : 'Anônimo'}
+                      profession={review.contratante.tipo || 'Profissional'}
+                      rating={review.nota}
+                      comment={review.nota === 0 ? 'Nenhum comentário' : review.comentario || 'Sem comentário'}
                     />
                   </div>
                 ))}
