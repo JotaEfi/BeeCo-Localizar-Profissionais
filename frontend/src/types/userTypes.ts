@@ -9,6 +9,7 @@ export interface userType {
     foto_perfil?: string,
     telefone?: string,
     id_endereco?: number
+    id?: number
 }
 
 export interface userLoginType {

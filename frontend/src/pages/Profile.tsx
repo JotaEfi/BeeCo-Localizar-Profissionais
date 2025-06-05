@@ -1,4 +1,4 @@
-import { createPost } from '@/api/postApi'
+import { api } from '@/utlis/api'
 import Button from '@/components/Button'
 import { Input } from '@/components/Input'
 import { Select } from '@/components/Select'
@@ -18,6 +18,7 @@ export const Profile = () => {
     preco: '',
     status: 'ativo',
   })
+  const [imageFile, setImageFile] = useState<File | null>(null)
 
   const { userData, updateUser } = useUser()
   const [activeMenu, setActiveMenu] = useState('Informações pessoais')
@@ -103,7 +104,29 @@ export const Profile = () => {
     }
 
     try {
-      await createPost(postData)
+      // Cria um FormData para enviar dados multipart/form-data (para arquivos)
+      const formData = new FormData()
+      
+      // Adiciona todos os campos do post ao FormData
+      formData.append('titulo', postData.titulo)
+      formData.append('descricao', postData.descricao)
+      formData.append('tipo_postagem', postData.tipo_postagem)
+      formData.append('categoria', postData.categoria)
+      formData.append('preco', String(postData.preco))
+      formData.append('status', postData.status)
+      
+      // Adiciona o arquivo de imagem ao FormData se existir
+      if (imageFile) {
+        formData.append('imagem', imageFile)
+      }
+      
+      // Envia os dados para a API
+      await api.post('/posts', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      })
+      
       setModalMessage('Serviço criado com sucesso!')
       setModalOpen(true)
       setPostData({
@@ -111,9 +134,10 @@ export const Profile = () => {
         descricao: '',
         tipo_postagem: 'prestador',
         categoria: '',
-        preco: 0,
+        preco: '',
         status: 'ativo',
       })
+      setImageFile(null)
     } catch (error) {
       setModalMessage('Erro ao criar serviço. Tente novamente.')
       setModalOpen(true)
@@ -264,7 +288,7 @@ export const Profile = () => {
                 step='0.01'
               />
 
-              {/*<div className='mb-4'>
+              <div className='mb-4'>
                 <label className='block mb-1 text-sm text-gray-700'>
                   Imagens dos serviços
                 </label>
@@ -274,11 +298,15 @@ export const Profile = () => {
                   onChange={(e) => {
                     const file = e.target.files?.[0]
                     if (file) {
+                      // Armazenar o arquivo original para upload
+                      setImageFile(file)
+                      
+                      // Criar preview da imagem
                       const reader = new FileReader()
                       reader.onloadend = () => {
                         setPostData((prev) => ({
                           ...prev,
-                          imagem: reader.result as string,
+                          imagem: reader.result as string, // apenas para preview
                         }))
                       }
                       reader.readAsDataURL(file)
@@ -293,7 +321,7 @@ export const Profile = () => {
                     className='mt-2 w-24 h-24 object-cover rounded-md border'
                   />
                 )}
-              </div>*/}
+              </div>
 
               <Button type='submit' className='mt-4'>
                 Criar Serviço
