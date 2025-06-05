@@ -15,3 +15,15 @@ export interface userLoginType {
     email: string, 
     senha: string
 }
+
+export interface User { 
+    id?: number,
+    data_nascimento?: string,
+    sexo?: string,
+    foto_perfil?: string,
+    nome?: string,
+    email?: string,
+    tipo?: string,
+    telefone?: string,
+    id_endereco?: number,
+} 

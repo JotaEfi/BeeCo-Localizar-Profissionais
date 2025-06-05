@@ -7,6 +7,7 @@ import { Textarea } from '@/components/TextArea'
 import { useUser } from '@/contexts/UserContext'
 import { Post } from '@/types/postTypes'
 import { useEffect, useState } from 'react'
+import { domesticProfessions } from '@/mock/DomesticProfession'
 
 export const Profile = () => {
   const [postData, setPostData] = useState<Post>({
@@ -24,6 +25,7 @@ export const Profile = () => {
   const [tempUserData, setTempUserData] = useState(userData)
   const [modalOpen, setModalOpen] = useState(false)
   const [modalMessage, setModalMessage] = useState('')
+
 
   const useDebounce = <T,>(value: T, delay: number): T => {
     const [debouncedValue, setDebouncedValue] = useState(value)
@@ -150,6 +152,14 @@ export const Profile = () => {
                 maxLength={13}
                 onChange={handleChange}
               />
+                <Input
+                  label='CPF'
+                  placeholder='***.***.***-**'
+                  value={tempUserData.cpf}
+                  name='cpf'
+                  maxLength={14}
+                  onChange={handleChange}
+                />
               <div className='mb-4'>
                 <label className='block mb-1 text-sm text-gray-700'>
                   Foto de Perfil
@@ -170,14 +180,6 @@ export const Profile = () => {
                 )}
               </div>
 
-              <Input
-                label='CPF'
-                placeholder='***.***.***-**'
-                value={tempUserData.cpf}
-                name='cpf'
-                maxLength={14}
-                onChange={handleChange}
-              />
               <Input
                 label='Data de nascimento'
                 placeholder='YYYY-MM-DD'
@@ -244,26 +246,12 @@ export const Profile = () => {
                 onChange={handlePostChange}
               >
                 <option value=''>Selecione uma categoria</option>
-                <option value='pedreiro'>Pedreiro</option>
-                <option value='faxineiro'>Faxineiro</option>
-                <option value='eletricista'>Eletricista</option>
-                <option value='encanador'>Encanador</option>
-                <option value='jardineiro'>Jardineiro</option>
-                <option value='pintor'>Pintor</option>
-                <option value='babá'>Babá</option>
-                <option value='cozinheiro'>Cozinheiro</option>
-                <option value='diarista'>Diarista</option>
-                <option value='cuidador'>Cuidador de Idosos</option>
-                <option value='lavadeira'>Lavadeira</option>
-                <option value='passadeira'>Passadeira</option>
-                <option value='zelador'>Zelador</option>
-                <option value='montador'>Montador de Móveis</option>
-                <option value='vidraceiro'>Vidraceiro</option>
-                <option value='marceneiro'>Marceneiro</option>
-                <option value='carpinteiro'>Carpinteiro</option>
-                <option value='reparos'>Serviços Gerais de Reparos</option>
-                <option value='limpeza-piscina'>Limpeza de Piscina</option>
-                <option value='dedetizador'>Dedetizador</option>
+                {domesticProfessions.map((profession) => (
+                  <option key={profession.id} value={profession.name}>
+                    {profession.name}
+                  </option>
+                ))}
+                
               </Select>
               <Input
                 type='number'
@@ -324,12 +312,16 @@ export const Profile = () => {
       <div className='flex h-screen w-screen items-center justify-center gap-10 text-dark-gray p-12'>
         <div className='w-70 flex flex-col shadow-2xl rounded-[8px]'>
           <div className='p-6 flex flex-col items-center'>
-            <div className='h-16 w-16 rounded-full bg-[#FFC75A] mb-6'></div>
+            <div className='h-16 w-16 rounded-full  mb-6 '>
+              <img className='object-cover w-full h-full rounded-full' src={userData.foto_perfil} alt="" />
+
+            </div>
             <span className='text-[1.2rem]'>{userData.nome || 'Usuário'}</span>
             <span className='text-gray-400 capitalize'>
               {userData.tipo || 'Usuário'}
             </span>
-            <div className='w-full border-t border-gray-200 my-5'></div>
+            <div className='w-full border-t border-gray-200 my-5'>
+            </div>
             <ul className='w-full text-center py-4 transition gap-3 flex flex-col'>
               {[
                 'Informações pessoais',
