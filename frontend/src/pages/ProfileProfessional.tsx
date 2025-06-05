@@ -13,6 +13,7 @@ import toast, { Toaster } from 'react-hot-toast'
 import { getCookie } from '@/utlis/cookies'
 import { PostResponse } from '@/types/postTypes'
 import { addFavorite } from '@/api/favApi'
+import { PostResponse } from '@/types/postTypes'
 
 export const ProfileProfessional = () => {
   const [rating, setRating] = useState(0)
