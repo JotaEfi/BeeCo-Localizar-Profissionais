@@ -10,7 +10,6 @@ import { getPosts } from '@/api/postApi'
 
 export const Favorites = () => {
    const [post, setPosts] = useState<PostResponse[]>([])
-    
   
     useEffect(() => {
       const fetchPosts = async () => {
@@ -54,7 +53,6 @@ export const Favorites = () => {
                           valueService={item.preco}
                           titulo={item.titulo}
                         />
-                      
                       </Link>
                     ))}
                 </div>

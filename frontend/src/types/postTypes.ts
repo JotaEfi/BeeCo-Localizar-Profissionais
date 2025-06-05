@@ -5,7 +5,7 @@ export interface Post {
     descricao: string;
     categoria: string;
     tipo_postagem: string;
-    preco: number;
+    preco: number | string;
     status: string;
     imagem?: string
 }

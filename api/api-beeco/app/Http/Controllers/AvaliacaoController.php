@@ -2,18 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\avaliacao;
+use App\Models\Avaliacao;
 use Illuminate\Http\Request;
 
 class AvaliacaoController extends Controller
 {
-    // Listar todas as avaliações
     public function index()
     {
-        return avaliacao::all();
+        return Avaliacao::with(['prestador', 'contratante'])->get();
     }
 
-    // Criar uma nova avaliação
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -24,20 +22,21 @@ class AvaliacaoController extends Controller
             'tipo' => 'required|in:prestador,contratante',
         ]);
 
-        $avaliacao = avaliacao::create($validated);
+        $avaliacao = Avaliacao::create($validated);
 
         return response()->json($avaliacao, 201);
     }
 
-    // Mostrar uma avaliação específica
-    public function show(avaliacao $avaliacao)
+    public function show($id)
     {
-        return $avaliacao;
+        $avaliacao = Avaliacao::with(['prestador', 'contratante'])->findOrFail($id);
+        return response()->json($avaliacao);
     }
 
-    // Atualizar uma avaliação
-    public function update(Request $request, avaliacao $avaliacao)
+    public function update(Request $request, $id)
     {
+        $avaliacao = Avaliacao::findOrFail($id);
+
         $validated = $request->validate([
             'nota' => 'sometimes|required|integer|min:1|max:5',
             'comentario' => 'nullable|string',
@@ -49,11 +48,13 @@ class AvaliacaoController extends Controller
         return response()->json($avaliacao);
     }
 
-    // Deletar uma avaliação
-    public function destroy(avaliacao $avaliacao)
+    public function destroy($id)
     {
+        $avaliacao = Avaliacao::findOrFail($id);
         $avaliacao->delete();
 
         return response()->json(null, 204);
     }
 }
+
+
