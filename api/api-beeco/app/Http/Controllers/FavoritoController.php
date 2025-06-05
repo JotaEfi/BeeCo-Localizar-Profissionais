@@ -1,64 +1,74 @@
 <?php
-
-
 namespace App\Http\Controllers;
 
 use App\Models\Favoritos;
 use App\Models\Users;
 use Illuminate\Http\Request;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class FavoritoController extends Controller
 {
-    // Listar favoritos do contratante logado
     public function index(Request $request)
     {
-        if ($request->user()->tipo !== 'contratante') {
-            return response()->json(['error' => 'Apenas contratantes podem listar favoritos.'], 403);
-        }
-
-        $favoritos = Favoritos::where('id_contratante', $request->user()->id)
-            ->with('prestador') 
+        $user = JWTAuth::user();
+        
+        $favoritos = Favoritos::where('id_contratante', $user->id)
+            ->with('prestador')
             ->get();
 
-        return response()->json($favoritos);
+        return response()->json([
+            'status' => 'success',
+            'favoritos' => $favoritos
+        ]);
     }
 
-    // Adicionar prestador aos favoritos
     public function store(Request $request)
     {
         $request->validate([
-            'id_prestador' => 'required|exists:users,id',
+            'id_prestador' => 'required|exists:users,id'
         ]);
 
-        if ($request->user()->tipo !== 'contratante') {
-            return response()->json(['error' => 'Apenas contratantes podem favoritar.'], 403);
+        $user = JWTAuth::user();
+
+        // Verifica se o usuário é um contratante
+        if ($user->tipo !== 'contratante') {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Apenas contratantes podem favoritar prestadores'
+            ], 403);
         }
 
+        // Verifica se o prestador existe e é do tipo prestador
         $prestador = Users::where('id', $request->id_prestador)
             ->where('tipo', 'prestador')
             ->firstOrFail();
 
+        // Cria ou recupera o favorito
         $favorito = Favoritos::firstOrCreate([
-            'id_contratante' => $request->user()->id,
-            'id_prestador' => $prestador->id,
+            'id_contratante' => $user->id,
+            'id_prestador' => $prestador->id
         ]);
 
-        return response()->json($favorito, 201);
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Prestador adicionado aos favoritos',
+            'favorito' => $favorito
+        ], 201);
     }
 
-    // Remover prestador dos favoritos
-    public function destroy(Request $request, $prestador_id)
+    public function destroy($prestador_id)
     {
-        if ($request->user()->tipo !== 'contratante') {
-            return response()->json(['error' => 'Apenas contratantes podem remover favoritos.'], 403);
-        }
+        $user = JWTAuth::user();
 
-        $favorito = Favoritos::where('id_contratante', $request->user()->id)
+        $favorito = Favoritos::where('id_contratante', $user->id)
             ->where('id_prestador', $prestador_id)
             ->firstOrFail();
 
         $favorito->delete();
 
-        return response()->json(['message' => 'Favorito removido com sucesso']);
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Prestador removido dos favoritos'
+        ]);
     }
 }

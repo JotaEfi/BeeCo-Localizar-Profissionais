@@ -117,102 +117,102 @@ Route::middleware('auth:api')->group(function () {
     // Response: { "id": 2, "nome": "Eletricista", "descricao": "Serviços elétricos residenciais e comerciais", "created_at": "2025-01-01T00:00:00.000000Z" }
     Route::post('/profissoes', [\App\Http\Controllers\ProfissaoController::class, 'store']);
 
+
+    // ============================================================================
+    // ROTAS DE FAVORITOS (Públicas - mas devem ser protegidas)
+    // ============================================================================
+
+    // GET /api/favoritos - Listar favoritos do usuário
+    // Response: [{ "id": 1, "prestador": { "id": 2, "name": "Maria", "profissao": "Encanador" }, "created_at": "2025-01-01T00:00:00.000000Z" }]
+    Route::get('/favoritos', [\App\Http\Controllers\FavoritoController::class, 'index']);
+
+    // POST /api/favoritos - Adicionar prestador aos favoritos
+    // Request: { "id_prestador": 2 }
+    // Response: { "message": "Prestador adicionado aos favoritos", "favorito": { "id": 1, "prestador_id": 2, "user_id": 1 } }
+    Route::post('/favoritos', [\App\Http\Controllers\FavoritoController::class, 'store']);
+
+    // DELETE /api/favoritos/{prestador_id} - Remover prestador dos favoritos
+    // Response: { "message": "Prestador removido dos favoritos" }
+    Route::delete('/favoritos/{prestador_id}', [\App\Http\Controllers\FavoritoController::class, 'destroy']);
+
+    // ============================================================================
+    // ROTAS DE NEGOCIAÇÃO (Públicas - mas devem ser protegidas)
+    // ============================================================================
+
+    // GET /api/negociacao - Listar negociações do usuário
+    // Response: [{ "id": 1, "post_id": 1, "prestador_id": 2, "valor": 150.00, "status": "pendente", "created_at": "2025-01-01T00:00:00.000000Z" }]
+    Route::get('/negociacao', [\App\Http\Controllers\NegociacaoController::class, 'index']);
+
+    // POST /api/negociacao - Criar nova negociação
+    // Request: { "post_id": 1, "prestador_id": 2, "valor": 150.00, "observacoes": "Disponível amanhã" }
+    // Response: { "id": 1, "post_id": 1, "prestador_id": 2, "valor": 150.00, "status": "pendente", "created_at": "2025-01-01T00:00:00.000000Z" }
+    Route::post('/negociacao', [\App\Http\Controllers\NegociacaoController::class, 'store']);
+
+    // GET /api/negociacao/{id} - Obter negociação específica
+    // Response: { "id": 1, "post": { "titulo": "Preciso de encanador" }, "prestador": { "name": "Maria" }, "valor": 150.00, "status": "pendente" }
+    Route::get('/negociacao/{id}', [\App\Http\Controllers\NegociacaoController::class, 'show']);
+
+    // PUT /api/negociacao/{id} - Atualizar negociação
+    // Request: { "valor": 200.00, "status": "aceita" }
+    // Response: { "id": 1, "valor": 200.00, "status": "aceita", "updated_at": "2025-01-01T12:00:00.000000Z" }
+    Route::put('/negociacao/{id}', [\App\Http\Controllers\NegociacaoController::class, 'update']);
+
+    // DELETE /api/negociacao/{id} - Cancelar negociação
+    // Response: { "message": "Negociação cancelada com sucesso" }
+    Route::delete('/negociacao/{id}', [\App\Http\Controllers\NegociacaoController::class, 'destroy']);
+
+    // ============================================================================
+    // ROTAS DE TAREFAS (Públicas - mas devem ser protegidas)
+    // ============================================================================
+
+    // GET /api/tarefas - Listar tarefas do usuário
+    // Response: [{ "id": 1, "titulo": "Consertar vazamento", "descricao": "Vazamento no banheiro", "status": "em_andamento", "created_at": "2025-01-01T00:00:00.000000Z" }]
+    Route::get('/tarefas', [\App\Http\Controllers\TarefaController::class, 'index']);
+
+    // POST /api/tarefas - Criar nova tarefa
+    // Request: { "titulo": "Instalar ventilador", "descricao": "Ventilador de teto na sala", "data_prazo": "2025-01-15" }
+    // Response: { "id": 2, "titulo": "Instalar ventilador", "descricao": "Ventilador de teto na sala", "status": "pendente", "created_at": "2025-01-01T00:00:00.000000Z" }
+    Route::post('/tarefas', [\App\Http\Controllers\TarefaController::class, 'store']);
+
+    // GET /api/tarefas/{id} - Obter tarefa específica
+    // Response: { "id": 1, "titulo": "Consertar vazamento", "descricao": "Vazamento no banheiro", "status": "em_andamento", "prestador": { "name": "Maria" } }
+    Route::get('/tarefas/{id}', [\App\Http\Controllers\TarefaController::class, 'show']);
+
+    // PUT /api/tarefas/{id} - Atualizar tarefa
+    // Request: { "status": "concluida", "observacoes": "Serviço finalizado com sucesso" }
+    // Response: { "id": 1, "status": "concluida", "observacoes": "Serviço finalizado com sucesso", "updated_at": "2025-01-01T18:00:00.000000Z" }
+    Route::put('/tarefas/{id}', [\App\Http\Controllers\TarefaController::class, 'update']);
+
+    // DELETE /api/tarefas/{id} - Remover tarefa
+    // Response: { "message": "Tarefa removida com sucesso" }
+    Route::delete('/tarefas/{id}', [\App\Http\Controllers\TarefaController::class, 'destroy']);
+
+    // ============================================================================
+    // ROTAS DE AVALIAÇÕES (Públicas - mas devem ser protegidas)
+    // ============================================================================
+
+    // GET /api/avaliacoes - Listar avaliações
+    // Response: [{ "id": 1, "nota": 5, "comentario": "Excelente serviço", "avaliador": { "name": "João" }, "avaliado": { "name": "Maria" }, "created_at": "2025-01-01T00:00:00.000000Z" }]
+    Route::get('/avaliacoes', [\App\Http\Controllers\AvaliacaoController::class, 'index']);
+
+    // POST /api/avaliacoes - Criar nova avaliação
+    // Request: { "avaliado_id": 2, "nota": 5, "comentario": "Serviço excelente, recomendo!", "tarefa_id": 1 }
+    // Response: { "id": 1, "nota": 5, "comentario": "Serviço excelente, recomendo!", "avaliador_id": 1, "avaliado_id": 2, "created_at": "2025-01-01T00:00:00.000000Z" }
+    Route::post('/avaliacoes', [\App\Http\Controllers\AvaliacaoController::class, 'store']);
+
+    // GET /api/avaliacoes/{avaliacao} - Obter avaliação específica
+    // Response: { "id": 1, "nota": 5, "comentario": "Excelente serviço", "avaliador": { "name": "João" }, "avaliado": { "name": "Maria" }, "tarefa": { "titulo": "Consertar vazamento" } }
+    Route::get('/avaliacoes/{avaliacao}', [\App\Http\Controllers\AvaliacaoController::class, 'show']);
+
+    // PUT /api/avaliacoes/{avaliacao} - Atualizar avaliação
+    // Request: { "nota": 4, "comentario": "Bom serviço, mas pode melhorar" }
+    // Response: { "id": 1, "nota": 4, "comentario": "Bom serviço, mas pode melhorar", "updated_at": "2025-01-01T12:00:00.000000Z" }
+    Route::put('/avaliacoes/{avaliacao}', [\App\Http\Controllers\AvaliacaoController::class, 'update']);
+
+    // DELETE /api/avaliacoes/{avaliacao} - Remover avaliação
+    // Response: { "message": "Avaliação removida com sucesso" }
+    Route::delete('/avaliacoes/{avaliacao}', [\App\Http\Controllers\AvaliacaoController::class, 'destroy']);
+
+
+
 });
-
-// ============================================================================
-// ROTAS DE FAVORITOS (Públicas - mas devem ser protegidas)
-// ============================================================================
-
-// GET /api/favoritos - Listar favoritos do usuário
-// Response: [{ "id": 1, "prestador": { "id": 2, "name": "Maria", "profissao": "Encanador" }, "created_at": "2025-01-01T00:00:00.000000Z" }]
-Route::get('/favoritos', [\App\Http\Controllers\FavoritoController::class, 'index']);
-
-// POST /api/favoritos - Adicionar prestador aos favoritos
-// Request: { "prestador_id": 2 }
-// Response: { "message": "Prestador adicionado aos favoritos", "favorito": { "id": 1, "prestador_id": 2, "user_id": 1 } }
-Route::post('/favoritos', [\App\Http\Controllers\FavoritoController::class, 'store']);
-
-// DELETE /api/favoritos/{prestador_id} - Remover prestador dos favoritos
-// Response: { "message": "Prestador removido dos favoritos" }
-Route::delete('/favoritos/{prestador_id}', [\App\Http\Controllers\FavoritoController::class, 'destroy']);
-
-// ============================================================================
-// ROTAS DE NEGOCIAÇÃO (Públicas - mas devem ser protegidas)
-// ============================================================================
-
-// GET /api/negociacao - Listar negociações do usuário
-// Response: [{ "id": 1, "post_id": 1, "prestador_id": 2, "valor": 150.00, "status": "pendente", "created_at": "2025-01-01T00:00:00.000000Z" }]
-Route::get('/negociacao', [\App\Http\Controllers\NegociacaoController::class, 'index']);
-
-// POST /api/negociacao - Criar nova negociação
-// Request: { "post_id": 1, "prestador_id": 2, "valor": 150.00, "observacoes": "Disponível amanhã" }
-// Response: { "id": 1, "post_id": 1, "prestador_id": 2, "valor": 150.00, "status": "pendente", "created_at": "2025-01-01T00:00:00.000000Z" }
-Route::post('/negociacao', [\App\Http\Controllers\NegociacaoController::class, 'store']);
-
-// GET /api/negociacao/{id} - Obter negociação específica
-// Response: { "id": 1, "post": { "titulo": "Preciso de encanador" }, "prestador": { "name": "Maria" }, "valor": 150.00, "status": "pendente" }
-Route::get('/negociacao/{id}', [\App\Http\Controllers\NegociacaoController::class, 'show']);
-
-// PUT /api/negociacao/{id} - Atualizar negociação
-// Request: { "valor": 200.00, "status": "aceita" }
-// Response: { "id": 1, "valor": 200.00, "status": "aceita", "updated_at": "2025-01-01T12:00:00.000000Z" }
-Route::put('/negociacao/{id}', [\App\Http\Controllers\NegociacaoController::class, 'update']);
-
-// DELETE /api/negociacao/{id} - Cancelar negociação
-// Response: { "message": "Negociação cancelada com sucesso" }
-Route::delete('/negociacao/{id}', [\App\Http\Controllers\NegociacaoController::class, 'destroy']);
-
-// ============================================================================
-// ROTAS DE TAREFAS (Públicas - mas devem ser protegidas)
-// ============================================================================
-
-// GET /api/tarefas - Listar tarefas do usuário
-// Response: [{ "id": 1, "titulo": "Consertar vazamento", "descricao": "Vazamento no banheiro", "status": "em_andamento", "created_at": "2025-01-01T00:00:00.000000Z" }]
-Route::get('/tarefas', [\App\Http\Controllers\TarefaController::class, 'index']);
-
-// POST /api/tarefas - Criar nova tarefa
-// Request: { "titulo": "Instalar ventilador", "descricao": "Ventilador de teto na sala", "data_prazo": "2025-01-15" }
-// Response: { "id": 2, "titulo": "Instalar ventilador", "descricao": "Ventilador de teto na sala", "status": "pendente", "created_at": "2025-01-01T00:00:00.000000Z" }
-Route::post('/tarefas', [\App\Http\Controllers\TarefaController::class, 'store']);
-
-// GET /api/tarefas/{id} - Obter tarefa específica
-// Response: { "id": 1, "titulo": "Consertar vazamento", "descricao": "Vazamento no banheiro", "status": "em_andamento", "prestador": { "name": "Maria" } }
-Route::get('/tarefas/{id}', [\App\Http\Controllers\TarefaController::class, 'show']);
-
-// PUT /api/tarefas/{id} - Atualizar tarefa
-// Request: { "status": "concluida", "observacoes": "Serviço finalizado com sucesso" }
-// Response: { "id": 1, "status": "concluida", "observacoes": "Serviço finalizado com sucesso", "updated_at": "2025-01-01T18:00:00.000000Z" }
-Route::put('/tarefas/{id}', [\App\Http\Controllers\TarefaController::class, 'update']);
-
-// DELETE /api/tarefas/{id} - Remover tarefa
-// Response: { "message": "Tarefa removida com sucesso" }
-Route::delete('/tarefas/{id}', [\App\Http\Controllers\TarefaController::class, 'destroy']);
-
-// ============================================================================
-// ROTAS DE AVALIAÇÕES (Públicas - mas devem ser protegidas)
-// ============================================================================
-
-// GET /api/avaliacoes - Listar avaliações
-// Response: [{ "id": 1, "nota": 5, "comentario": "Excelente serviço", "avaliador": { "name": "João" }, "avaliado": { "name": "Maria" }, "created_at": "2025-01-01T00:00:00.000000Z" }]
-Route::get('/avaliacoes', [\App\Http\Controllers\AvaliacaoController::class, 'index']);
-
-// POST /api/avaliacoes - Criar nova avaliação
-// Request: { "avaliado_id": 2, "nota": 5, "comentario": "Serviço excelente, recomendo!", "tarefa_id": 1 }
-// Response: { "id": 1, "nota": 5, "comentario": "Serviço excelente, recomendo!", "avaliador_id": 1, "avaliado_id": 2, "created_at": "2025-01-01T00:00:00.000000Z" }
-Route::post('/avaliacoes', [\App\Http\Controllers\AvaliacaoController::class, 'store']);
-
-// GET /api/avaliacoes/{avaliacao} - Obter avaliação específica
-// Response: { "id": 1, "nota": 5, "comentario": "Excelente serviço", "avaliador": { "name": "João" }, "avaliado": { "name": "Maria" }, "tarefa": { "titulo": "Consertar vazamento" } }
-Route::get('/avaliacoes/{avaliacao}', [\App\Http\Controllers\AvaliacaoController::class, 'show']);
-
-// PUT /api/avaliacoes/{avaliacao} - Atualizar avaliação
-// Request: { "nota": 4, "comentario": "Bom serviço, mas pode melhorar" }
-// Response: { "id": 1, "nota": 4, "comentario": "Bom serviço, mas pode melhorar", "updated_at": "2025-01-01T12:00:00.000000Z" }
-Route::put('/avaliacoes/{avaliacao}', [\App\Http\Controllers\AvaliacaoController::class, 'update']);
-
-// DELETE /api/avaliacoes/{avaliacao} - Remover avaliação
-// Response: { "message": "Avaliação removida com sucesso" }
-Route::delete('/avaliacoes/{avaliacao}', [\App\Http\Controllers\AvaliacaoController::class, 'destroy']);
-
-
-

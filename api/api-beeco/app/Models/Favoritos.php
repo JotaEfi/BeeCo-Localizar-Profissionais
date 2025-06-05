@@ -14,16 +14,14 @@ class Favoritos extends Model
         'id_prestador',
     ];
 
-    // Relacionamento com o contratante
     public function contratante()
     {
-        return $this->belongsTo(Contratante::class, 'id_contratante');
+        return $this->belongsTo(Users::class, 'id_contratante');
     }
 
-    // Relacionamento com o prestador
     public function prestador()
     {
-        return $this->belongsTo(Prestador::class, 'id_prestador');
+        return $this->belongsTo(Users::class, 'id_prestador');
     }
 }
 
