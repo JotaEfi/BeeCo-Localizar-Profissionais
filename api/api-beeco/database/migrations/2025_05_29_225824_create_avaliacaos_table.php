@@ -11,15 +11,18 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('avaliacaos', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('avaliado_id');
-            $table->tinyInteger('nota'); // 1 a 5, por exemplo
-            $table->text('comentario')->nullable();
-            $table->enum('tipo', ['prestador', 'contratante']);
-            $table->timestamps();
+        Schema::create('avaliacoes', function (Blueprint $table) {
+             $table->id('id_avaliacao');
+        $table->unsignedBigInteger('prestador_id');
+        $table->unsignedBigInteger('contratante_id');
+        $table->tinyInteger('nota');
+        $table->text('comentario')->nullable();
+        $table->enum('tipo', ['prestador', 'contratante']);
+        $table->timestamps();
 
-            $table->foreign('avaliado_id')->references('id')->on('users')->onDelete('cascade');
+        $table->foreign('prestador_id')->references('id')->on('users')->onDelete('cascade');
+        $table->foreign('contratante_id')->references('id')->on('users')->onDelete('cascade');
+
         });
     }
 
@@ -28,6 +31,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('avaliacaos');
+        Schema::dropIfExists('avaliacao');
     }
 };
