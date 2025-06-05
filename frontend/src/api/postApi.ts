@@ -11,3 +11,14 @@ export const createPost = async (postData: Post) => {
     throw error
   }
 }
+
+export const getPosts = async (): Promise<Post[]> => {
+  try {
+    const response = await api.get('/posts')
+    console.log('Posts obtidos com sucesso:', response.data)
+    return response.data
+  } catch (error) {
+    console.error('Erro ao obter posts:', error)
+    throw error
+  }
+}
