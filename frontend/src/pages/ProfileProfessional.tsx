@@ -12,6 +12,7 @@ import { useUser } from '@/contexts/UserContext'
 import toast, { Toaster } from 'react-hot-toast'
 import { getCookie } from '@/utlis/cookies'
 import { PostResponse } from '@/types/postTypes'
+import { addFavorite } from '@/api/favApi'
 
 export const ProfileProfessional = () => {
   const [rating, setRating] = useState(0)
@@ -24,6 +25,7 @@ export const ProfileProfessional = () => {
   const userId = getCookie('id')
   const [review, setReview] = useState<ReviewTypes[]>([])
   const userLoggedIn = useUser()
+  const profissionalId = String(post?.user?.id || '')
   
     useEffect(() => {
       const fetchReviews = async () => {
@@ -112,11 +114,6 @@ export const ProfileProfessional = () => {
     }
   }
 
-  const handleFavorite = () => {
-    setIsFavorited((prev) => !prev)
-    console.log('Favorito:', !isFavorited)
-  }
-
   const [reviewStartIdx, setReviewStartIdx] = useState(0)
   const reviewsPerPage = 3
   const totalReviews = comments.length
@@ -133,6 +130,22 @@ export const ProfileProfessional = () => {
       prev + reviewsPerPage >= totalReviews ? prev : prev + reviewsPerPage
     )
   }
+
+  const handleFavorite = async (profissionalId: string) => {
+    try {
+      setIsFavorited((prev) => !prev)
+      const response = await addFavorite(profissionalId)
+      
+      console.log('Favorito:', !isFavorited)
+      console.log('ID do profissional:', id)
+    
+      console.log('Favorito adicionado com sucesso:', response)
+      toast.success('Profissional adicionado aos favoritos!')    
+    } catch (error) { 
+      console.error('Erro ao adicionar favorito:', error)
+      toast.error('Erro ao adicionar profissional aos favoritos.')
+    }
+  } 
 
   return (
     <div className='flex min-h-screen bg-[#fcf8f3]'>
@@ -173,7 +186,7 @@ export const ProfileProfessional = () => {
                   <h2 className='text-2xl font-bold text-dark-gray'>
                     {post?.user?.nome || 'Nome do profissional'}
                   </h2>
-                  <button onClick={handleFavorite}>
+                  <button onClick={() => handleFavorite(profissionalId)}>
                     <Heart
                       size={24}
                       className={`transition-colors ${
@@ -337,5 +350,4 @@ export const ProfileProfessional = () => {
         </div>
       </main>
     </div>
-  )
-}
+  )}

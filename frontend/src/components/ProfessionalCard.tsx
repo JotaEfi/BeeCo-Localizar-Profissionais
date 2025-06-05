@@ -40,11 +40,13 @@ export const ProfessionalCard = ({
         <div>
           <p>{titulo}</p>
         </div>
-        <div className='flex items-center justify-end w-full'>
-          <p className='font-semibold text-[1.3rem]'>
-            R${valueService}
-          </p>
-        </div>
+        {valueService !== 0 && (
+          <div className='flex items-center justify-end w-full'>
+            <p className='font-semibold text-[1.3rem]'>
+              R${valueService}
+            </p>
+          </div>
+        )}
       </div>
     </div>
   )
