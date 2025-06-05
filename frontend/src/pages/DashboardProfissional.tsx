@@ -42,8 +42,7 @@ export const DashboardProfissional = () => {
             <div className='absolute left-8 bottom-[-15px] bg-white rounded-xl shadow-lg flex items-center p-4 gap-4 min-w-[350px]'>
               <img
                 src={
-                  userData?.foto_perfil ||
-                  'https://randomuser.me/api/portraits/men/32.jpg'
+                  userData?.foto_perfil
                 }
                 alt='Avatar'
                 className='w-16 h-16 rounded-full border-4 border-white -mt-4'

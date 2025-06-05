@@ -4,7 +4,7 @@ interface ProfessionalCardProps {
   name: string
   rate?: number
   profession?: string
-  valueService?: number
+  valueService?: number | string
   titulo?: string
 }
 

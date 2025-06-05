@@ -1,11 +1,9 @@
 import { useEffect, useState } from 'react'
 import { Star, Heart } from 'lucide-react'
-import { Star, Heart } from 'lucide-react'
 import { SideMenu } from '@/components/SideMenu'
 import { CardComment } from '@/components/CardComment'
 import { comments } from '@/mock/Comments'
 import Button from '@/components/Button'
-import { useParams } from 'react-router-dom'
 import { useParams } from 'react-router-dom'
 import { getPostsById } from '@/api/postApi'
 import { createRate } from '@/api/rateApi'
@@ -31,7 +29,6 @@ export const ProfileProfessional = () => {
   const fetchPostById = async (id?: string) => {
     try {
       const { data } = await getPostsById(id)
-      const { data } = await getPostsById(id)
       console.log('Post encontrado:', data)
       setPost(data)
       setPost(data)
@@ -43,7 +40,6 @@ export const ProfileProfessional = () => {
   useEffect(() => {
     fetchPostById(id)
     console.log('ID do profissional:', id)
-  }, [id])
   }, [id])
 
   const handleCommentChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -136,19 +132,8 @@ export const ProfileProfessional = () => {
               <div className='flex items-center justify-center bg-gray-200 rounded-md w-full h-full text-gray-500 text-center p-4'>
                 Obra 1
               </div>
-              <div className='flex items-center justify-center bg-gray-200 rounded-md w-full h-full text-gray-500 text-center p-4'>
-                Obra 1
-              </div>
             </div>
             <div className='w-2/3 grid grid-cols-3 gap-2'>
-              {Array.from({ length: 6 }).map((_, i) => (
-                <div
-                  key={i}
-                  className='h-48 flex items-center justify-center bg-gray-200 rounded-md text-gray-500 text-center p-4'
-                >
-                  Obra {i + 2}
-                </div>
-              ))}
               {Array.from({ length: 6 }).map((_, i) => (
                 <div
                   key={i}
@@ -161,48 +146,33 @@ export const ProfileProfessional = () => {
           </div>
 
           {/* Informações do profissional */}
-          {/* Informações do profissional */}
           <section className='w-full flex flex-col gap-4'>
             <div className='flex items-center gap-4'>
               <img
                 src='https://randomuser.me/api/portraits/men/32.jpg'
                 alt={post?.user?.nome || 'Profissional'}
-                alt={post?.user?.nome || 'Profissional'}
                 className='w-14 h-14 rounded-full object-cover border-2 border-white shadow'
               />
               <div className='flex items-center gap-25'>
-                <h2 className='text-2xl font-bold text-dark-gray'>
-                  {post?.user?.nome || 'Nome do profissional'}
-              <div className='flex items-center gap-25'>
-                <h2 className='text-2xl font-bold text-dark-gray'>
-                  {post?.user?.nome || 'Nome do profissional'}
-                </h2>
-                <button onClick={handleFavorite}>
-                  <Heart
-                    size={24}
-                    className={`transition-colors ${
-                      isFavorited
-                        ? 'fill-[#FFC75A] text-yellow-500'
-                        : 'text-gray-400 hover:text-[#ffc85adf]'
-                    }`}
-                  />
-                </button>
-                <button onClick={handleFavorite}>
-                  <Heart
-                    size={24}
-                    className={`transition-colors ${
-                      isFavorited
-                        ? 'fill-[#FFC75A] text-yellow-500'
-                        : 'text-gray-400 hover:text-[#ffc85adf]'
-                    }`}
-                  />
-                </button>
+                  <h2 className='text-2xl font-bold text-dark-gray'>
+                    {post?.user?.nome || 'Nome do profissional'}
+                  </h2>
+                  <button onClick={handleFavorite}>
+                    <Heart
+                      size={24}
+                      className={`transition-colors ${
+                        isFavorited
+                          ? 'fill-[#FFC75A] text-yellow-500'
+                          : 'text-gray-400 hover:text-[#ffc85adf]'
+                      }`}
+                    />
+                  </button>
+                </div>
               </div>
-            </div>
+
 
 
             <p className='text-gray-600 text-base max-w-2xl mt-2'>
-              {post?.descricao || 'Descrição não disponível no momento.'}
               {post?.descricao || 'Descrição não disponível no momento.'}
             </p>
 
@@ -210,17 +180,10 @@ export const ProfileProfessional = () => {
             <div className='mt-2'>
               <span className='font-semibold text-dark-gray'>
                 Serviço oferecido:
-                Serviço oferecido:
               </span>
               <ul className='text-gray-700 mt-2 space-y-1 text-base'>
                 <li>{post?.titulo || 'Título do serviço'}</li>
-                <li>{post?.titulo || 'Título do serviço'}</li>
               </ul>
-              {post?.preco && (
-                <p className='mt-2 text-base font-medium'>
-                  Preço: R$ {post.preco}
-                </p>
-              )}
               {post?.preco && (
                 <p className='mt-2 text-base font-medium'>
                   Preço: R$ {post.preco}
@@ -261,7 +224,6 @@ export const ProfileProfessional = () => {
             </div>
           </section>
 
-          {/* Comentários */}
           {/* Comentários */}
           <section className='w-full'>
             <h2 className='text-xl font-semibold text-dark-gray border-b border-gray-200 pb-4'>
@@ -327,7 +289,6 @@ export const ProfileProfessional = () => {
           </section>
 
           {/* Avaliações */}
-          {/* Avaliações */}
           <section className='w-full'>
             <div className='mb-6 flex items-center justify-between'>
               <div>
@@ -358,13 +319,6 @@ export const ProfileProfessional = () => {
               {comments
                 .slice(reviewStartIdx, reviewStartIdx + reviewsPerPage)
                 .map((comment) => (
-                  <CardComment
-                    key={comment.name}
-                    name={comment.name}
-                    profession={comment.profession}
-                    rating={comment.rating}
-                    comment={comment.comment}
-                  />
                   <CardComment
                     key={comment.name}
                     name={comment.name}
