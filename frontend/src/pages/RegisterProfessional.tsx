@@ -10,51 +10,113 @@ import { setCookie } from '@/utlis/cookies'
 import { useNavigate } from 'react-router-dom'
 
 export const RegisterProfessional = () => {
-
   const [formData, setFormData] = useState<userType>({
     nome: '',
     email: '',
     senha: '',
     senha_confirmation: '',
-    tipo: 'prestador'
-  });
-  const [error, setError] = useState('')
-  const navigate = useNavigate();
+    tipo: 'prestador',
+  })
+
+  const [errors, setErrors] = useState({
+    nome: '',
+    email: '',
+    senha: '',
+    senha_confirmation: '',
+    general: '',
+  })
+
+  const navigate = useNavigate()
+
+  const validateEmail = (email: string): boolean => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    return emailRegex.test(email)
+  }
+
+  const validatePassword = (password: string): boolean => {
+    return password.length >= 6
+  }
 
   const handleChange = (field: string, value: string) => {
     setFormData((prev) => ({
       ...prev,
       [field]: value,
-    }));
-  };
+    }))
+
+    // Clear field error when user starts typing
+    setErrors((prev) => ({
+      ...prev,
+      [field]: '',
+    }))
+  }
 
   const handleRegister = async (e: FormEvent) => {
-    e.preventDefault();
+    e.preventDefault()
+    let hasError = false
+    const newErrors = {
+      nome: '',
+      email: '',
+      senha: '',
+      senha_confirmation: '',
+      general: '',
+    }
 
-    if (
-      !formData.email ||
-      !formData.nome ||
-      !formData.senha ||
-      !formData.senha_confirmation
-    ) {
-      setError('Preencha o campo vazio');
-      return;
+    // Name validation
+    if (!formData.nome) {
+      newErrors.nome = 'Nome é obrigatório'
+      hasError = true
+    }
+
+    // Email validation
+    if (!formData.email) {
+      newErrors.email = 'Email é obrigatório'
+      hasError = true
+    } else if (!validateEmail(formData.email)) {
+      newErrors.email = 'Email inválido'
+      hasError = true
+    }
+
+    // Password validation
+    if (!formData.senha) {
+      newErrors.senha = 'Senha é obrigatória'
+      hasError = true
+    } else if (!validatePassword(formData.senha)) {
+      newErrors.senha = 'A senha deve ter pelo menos 6 caracteres'
+      hasError = true
+    }
+
+    // Password confirmation validation
+    if (!formData.senha_confirmation) {
+      newErrors.senha_confirmation = 'Confirmação de senha é obrigatória'
+      hasError = true
+    } else if (formData.senha !== formData.senha_confirmation) {
+      newErrors.senha_confirmation = 'As senhas não coincidem'
+      hasError = true
+    }
+
+    if (hasError) {
+      setErrors(newErrors)
+      return
     }
 
     try {
-      const response = await createUser(formData);
-      const {token, user} = response 
+      const response = await createUser(formData)
+      const { token, user } = response
       setCookie('token', token)
       setCookie('id', user.id)
       navigate('/dashboard-profissional')
       setTimeout(() => {
-        window.location.reload();
-      }, 0);
-      console.log('Usuário criado:', response);
+        window.location.reload()
+      }, 0)
+      console.log('Usuário criado:', response)
     } catch (error) {
-      console.error('Erro no cadastro:', error);
+      console.error('Erro no cadastro:', error)
+      setErrors((prev) => ({
+        ...prev,
+        general: 'Erro ao criar usuário. Tente novamente.',
+      }))
     }
-  };
+  }
 
   useEffect(() => {
     getUserData()
@@ -62,30 +124,30 @@ export const RegisterProfessional = () => {
 
   return (
     <div className='flex flex-col justify-center items-center h-screen bg-[url("./assets/register-professional.jpg")] bg-cover bg-center'>
-      <div className='flex gap-30 justify-center items-center w-[800px] '>
+      <div className='flex gap-30 justify-center items-center w-[800px]'>
         <div className='flex flex-col gap-4'>
           <div className='flex flex-col gap-4'>
             <form onSubmit={handleRegister} className='flex gap-3 flex-col'>
-
-              <Input 
-                label='Nome' type='text' 
+              <Input
+                label='Nome'
+                type='text'
                 placeholder='Digite seu nome'
-                onChange={(e) => handleChange("nome", e.target.value)}
-                error={error}
+                value={formData.nome}
+                onChange={(e) => handleChange('nome', e.target.value)}
+                error={errors.nome}
+                className='w-[400px]'
               />
-              <Input 
-                label='Email' 
-                type='text' 
-                
-                placeholder='Digite seu email' 
-                onChange={(e) => handleChange("email", e.target.value)}
-                error={error}
+              <Input
+                label='Email'
+                type='text'
+                placeholder='Digite seu email'
+                value={formData.email}
+                onChange={(e) => handleChange('email', e.target.value)}
+                error={errors.email}
+                className='w-[400px]'
               />
-              <Select 
-                label="Profissão" 
-                defaultValue="" //adicionar no back
-              >
-                <option value="" disabled hidden>
+              <Select label='Profissão' defaultValue='' className='w-[400px]'>
+                <option value='' disabled hidden>
                   Selecione uma profissão
                 </option>
                 {domesticProfessions.map((profession) => (
@@ -97,23 +159,33 @@ export const RegisterProfessional = () => {
               <Input
                 label='Senha'
                 type='password'
-                
-                placeholder='Digite sua senha'onChange={(e) => handleChange("senha", e.target.value)}
-                error={error}
+                placeholder='Digite sua senha'
+                value={formData.senha}
+                onChange={(e) => handleChange('senha', e.target.value)}
+                error={errors.senha}
+                className='w-[400px]'
               />
               <Input
                 label='Confirmar Senha'
                 type='password'
-                
-                placeholder='Confirme sua senha'onChange={(e) => handleChange("senha_confirmation", e.target.value)}
-                error={error}
+                placeholder='Confirme sua senha'
+                value={formData.senha_confirmation}
+                onChange={(e) =>
+                  handleChange('senha_confirmation', e.target.value)
+                }
+                error={errors.senha_confirmation}
+                className='w-[400px]'
               />
+              {errors.general && (
+                <span className='text-red-500 text-sm'>{errors.general}</span>
+              )}
               <div className='flex justify-between items-center mt-6'>
                 <Button
                   variant='primary'
                   size='md'
                   width='full'
                   className='uppercase'
+                  type='submit'
                 >
                   continuar
                 </Button>
