@@ -413,6 +413,15 @@ export const Profile = () => {
                 ))}
               </div>
             </div>
+
+            <div className='mt-8 border-t border-gray-200 pt-6'>
+              <Button
+                type='button'
+                className='w-full border-2 border-[#FF4B4B] !text-[#FF4B4B] hover:!bg-[#FF4B4B] hover:!text-white transition-all duration-300 !bg-transparent'
+              >
+                Desativar Conta
+              </Button>
+            </div>
           </>
         )
       case 'Serviços':
