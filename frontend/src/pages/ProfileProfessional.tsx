@@ -12,7 +12,7 @@ import { useUser } from '@/contexts/UserContext'
 import toast, { Toaster } from 'react-hot-toast'
 import { getCookie } from '@/utlis/cookies'
 import { PostResponse } from '@/types/postTypes'
-import { addFavorite } from '@/api/favApi'
+import { addFavorite, getFavorites, removeFavorite } from '@/api/favApi'
 
 export const ProfileProfessional = () => {
   const [rating, setRating] = useState(0)
@@ -26,20 +26,34 @@ export const ProfileProfessional = () => {
   const [review, setReview] = useState<ReviewTypes[]>([])
   const userLoggedIn = useUser()
   const profissionalId = String(post?.user?.id || '')
-  
-    useEffect(() => {
-      const fetchReviews = async () => {
-        try {
-          
-          const response = await getRates()
-          console.log('Avaliações recebidas:', response)
-          setReview(response)
-        } catch (error) {
-          console.error('Erro ao buscar avaliações:', error)
-        }
+
+  const checkIfFavorited = async () => {
+    try {
+      const response = await getFavorites()
+      if (response && response.favoritos) {
+        const isAlreadyFavorited = response.favoritos.some(
+          (fav: any) => fav.id_prestador === Number(id)
+        )
+        setIsFavorited(isAlreadyFavorited)
       }
-      fetchReviews() 
-    }, [])
+    } catch (error) {
+      console.error('Erro ao verificar favoritos:', error)
+    }
+  }
+
+  useEffect(() => {
+    const fetchReviews = async () => {
+      try {
+        const response = await getRates()
+        console.log('Avaliações recebidas:', response)
+        setReview(response)
+      } catch (error) {
+        console.error('Erro ao buscar avaliações:', error)
+      }
+    }
+    fetchReviews()
+    checkIfFavorited()
+  }, [id])
 
   const handleRatingClick = (index: number) => {
     setRating(index + 1)
@@ -69,25 +83,23 @@ export const ProfileProfessional = () => {
       toast.error('Por favor, dê uma nota antes de enviar!')
       return
     }
-    
+
     if (!comment.trim()) {
       toast.error('Por favor, escreva um comentário antes de enviar!')
       return
     }
-    
-    
-    
+
     if (!post?.user?.id) {
       toast.error('Não foi possível identificar o profissional!')
       return
     }
-    
+
     try {
       setSubmitting(true)
-      
+
       if (!userId) {
-        toast.error('Usuário não identificado!');
-        return;
+        toast.error('Usuário não identificado!')
+        return
       }
 
       const rateData: rateTypes = {
@@ -95,15 +107,15 @@ export const ProfileProfessional = () => {
         contratante_id: Number(userId),
         nota: rating,
         comentario: comment,
-        tipo: 'prestador'
+        tipo: 'prestador',
       }
-      
+
       await createRate(rateData)
-      
+
       toast.success('Avaliação enviada com sucesso!')
       setComment('')
       setRating(0)
-      
+
       // Recarregar comentários
       fetchPostById(id)
     } catch (error) {
@@ -124,7 +136,6 @@ export const ProfileProfessional = () => {
     )
   }
 
-
   const handleNext = () => {
     setReviewStartIdx((prev) =>
       prev + reviewsPerPage >= totalReviews ? prev : prev + reviewsPerPage
@@ -133,19 +144,19 @@ export const ProfileProfessional = () => {
 
   const handleFavorite = async (profissionalId: string) => {
     try {
+      if (isFavorited) {
+        await removeFavorite(profissionalId)
+        toast.success('Profissional removido dos favoritos!')
+      } else {
+        await addFavorite(profissionalId)
+        toast.success('Profissional adicionado aos favoritos!')
+      }
       setIsFavorited((prev) => !prev)
-      const response = await addFavorite(profissionalId)
-      
-      console.log('Favorito:', !isFavorited)
-      console.log('ID do profissional:', id)
-    
-      console.log('Favorito adicionado com sucesso:', response)
-      toast.success('Profissional adicionado aos favoritos!')    
-    } catch (error) { 
-      console.error('Erro ao adicionar favorito:', error)
-      toast.error('Erro ao adicionar profissional aos favoritos.')
+    } catch (error) {
+      console.error('Erro ao gerenciar favorito:', error)
+      toast.error('Erro ao gerenciar favorito. Tente novamente.')
     }
-  } 
+  }
 
   return (
     <div className='flex min-h-screen bg-[#fcf8f3]'>
@@ -153,8 +164,8 @@ export const ProfileProfessional = () => {
       <main className='flex-1 flex flex-col items-center justify-start p-8'>
         <div className='w-full max-w-[1200px] mx-auto flex flex-col gap-16'>
           {/* Toaster para notificações */}
-          <Toaster position="top-right" toastOptions={{ duration: 4000 }} />
-          
+          <Toaster position='top-right' toastOptions={{ duration: 4000 }} />
+
           {/* Galeria */}
           <div className='w-full flex gap-2'>
             <div className='w-1/3'>
@@ -183,28 +194,25 @@ export const ProfileProfessional = () => {
                 className='w-14 h-14 rounded-full object-cover border-2 border-white shadow'
               />
               <div className='flex items-center gap-25'>
-                  <h2 className='text-2xl font-bold text-dark-gray'>
-                    {post?.user?.nome || 'Nome do profissional'}
-                  </h2>
-                  <button onClick={() => handleFavorite(profissionalId)}>
-                    <Heart
-                      size={24}
-                      className={`transition-colors ${
-                        isFavorited
-                          ? 'fill-[#FFC75A] text-yellow-500'
-                          : 'text-gray-400 hover:text-[#ffc85adf]'
-                      }`}
-                    />
-                  </button>
-                </div>
+                <h2 className='text-2xl font-bold text-dark-gray'>
+                  {post?.user?.nome || 'Nome do profissional'}
+                </h2>
+                <button onClick={() => handleFavorite(profissionalId)}>
+                  <Heart
+                    size={24}
+                    className={`transition-colors ${
+                      isFavorited
+                        ? 'fill-[#FFC75A] text-yellow-500'
+                        : 'text-gray-400 hover:text-[#ffc85adf]'
+                    }`}
+                  />
+                </button>
               </div>
-
-
+            </div>
 
             <p className='text-gray-600 text-base max-w-2xl mt-2'>
               {post?.descricao || 'Descrição não disponível no momento.'}
             </p>
-
 
             <div className='mt-2'>
               <span className='font-semibold text-dark-gray'>
@@ -219,7 +227,6 @@ export const ProfileProfessional = () => {
                 </p>
               )}
             </div>
-
 
             <div className='w-[300px]'>
               {post?.user?.telefone && (
@@ -249,7 +256,11 @@ export const ProfileProfessional = () => {
               <div className='flex'>
                 <div className='mr-4'>
                   <div className=' object-cover rounded-full bg-yellow-400'>
-                    <img className='object-cover w-12 h-12 rounded-full' src={userLoggedIn.userData.foto_perfil} alt="" />
+                    <img
+                      className='object-cover w-12 h-12 rounded-full'
+                      src={userLoggedIn.userData.foto_perfil}
+                      alt=''
+                    />
                   </div>
                 </div>
 
@@ -260,12 +271,19 @@ export const ProfileProfessional = () => {
                       rows={3}
                       value={comment}
                       onChange={handleCommentChange}
-                      placeholder="Compartilhe sua experiência com este profissional..."
+                      placeholder='Compartilhe sua experiência com este profissional...'
                     />
                   ) : (
-                    <div className="w-full p-4 bg-gray-50 border border-gray-200 rounded-lg text-center">
-                      <p className="text-gray-500">Você precisa estar logado para deixar um comentário</p>
-                      <a href="/login" className="text-yellow-500 font-medium hover:underline mt-1 block">Faça login para comentar</a>
+                    <div className='w-full p-4 bg-gray-50 border border-gray-200 rounded-lg text-center'>
+                      <p className='text-gray-500'>
+                        Você precisa estar logado para deixar um comentário
+                      </p>
+                      <a
+                        href='/login'
+                        className='text-yellow-500 font-medium hover:underline mt-1 block'
+                      >
+                        Faça login para comentar
+                      </a>
                     </div>
                   )}
 
@@ -284,13 +302,17 @@ export const ProfileProfessional = () => {
                             onClick={() => handleRatingClick(index)}
                           />
                         ))}
-                        <span className="ml-2 text-sm text-gray-500">
-                          {rating > 0 ? `${rating} ${rating === 1 ? 'estrela' : 'estrelas'}` : 'Selecione uma nota'}
+                        <span className='ml-2 text-sm text-gray-500'>
+                          {rating > 0
+                            ? `${rating} ${
+                                rating === 1 ? 'estrela' : 'estrelas'
+                              }`
+                            : 'Selecione uma nota'}
                         </span>
                       </div>
 
-                      <Button 
-                        onClick={handleSubmit} 
+                      <Button
+                        onClick={handleSubmit}
                         disabled={submitting || !rating || !comment.trim()}
                       >
                         {submitting ? 'Enviando...' : 'Comentar'}
@@ -333,15 +355,21 @@ export const ProfileProfessional = () => {
               {review
                 .slice(reviewStartIdx, reviewStartIdx + reviewsPerPage)
                 .map((review) => (
-                  <div
-                    key={review.id }
-                  >
+                  <div key={review.id}>
                     <CardComment
-                      img_perfil={review.contratante.foto_perfil }
-                      name={review.contratante.nome? review.contratante.nome : 'Anônimo'}
+                      img_perfil={review.contratante.foto_perfil}
+                      name={
+                        review.contratante.nome
+                          ? review.contratante.nome
+                          : 'Anônimo'
+                      }
                       profession={review.contratante.tipo || 'Profissional'}
                       rating={review.nota}
-                      comment={review.nota === 0 ? 'Nenhum comentário' : review.comentario || 'Sem comentário'}
+                      comment={
+                        review.nota === 0
+                          ? 'Nenhum comentário'
+                          : review.comentario || 'Sem comentário'
+                      }
                     />
                   </div>
                 ))}
@@ -350,4 +378,5 @@ export const ProfileProfessional = () => {
         </div>
       </main>
     </div>
-  )}
+  )
+}

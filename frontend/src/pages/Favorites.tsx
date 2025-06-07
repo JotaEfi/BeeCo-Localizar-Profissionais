@@ -6,30 +6,34 @@ import { ProfessionalCard } from '@/components/ProfessionalCard'
 import { useEffect, useState } from 'react'
 import { getFavorites } from '@/api/favApi'
 import { FavoriteResponse } from '@/types/favTypes'
+import { Link } from 'react-router-dom'
 
 export const Favorites = () => {
-   const [favorites, setFavorites] = useState<FavoriteResponse[]>([])
-  
-    useEffect(() => {
-      const fetchPosts = async () => {
-        try {
-          const response = await getFavorites()
-          console.log('Posts recebidos:', response)
-          // Verificar se a resposta tem a estrutura esperada
-          if (response && response.favoritos && Array.isArray(response.favoritos)) {
-            setFavorites(response.favoritos)
-          } else {
-            console.error('Formato de resposta inesperado:', response)
-            setFavorites([])
-          }
-        } catch (error) {
-          console.error('Erro ao buscar posts:', error)
+  const [favorites, setFavorites] = useState<FavoriteResponse[]>([])
+
+  useEffect(() => {
+    const fetchPosts = async () => {
+      try {
+        const response = await getFavorites()
+        console.log('Posts recebidos:', response)
+        // Verificar se a resposta tem a estrutura esperada
+        if (
+          response &&
+          response.favoritos &&
+          Array.isArray(response.favoritos)
+        ) {
+          setFavorites(response.favoritos)
+        } else {
+          console.error('Formato de resposta inesperado:', response)
           setFavorites([])
         }
+      } catch (error) {
+        console.error('Erro ao buscar posts:', error)
+        setFavorites([])
       }
-      fetchPosts()
-    }, [])
-  
+    }
+    fetchPosts()
+  }, [])
 
   return (
     <>
@@ -49,16 +53,20 @@ export const Favorites = () => {
         {favorites.length === 0 ? (
           <p className='text-gray-500'>Nenhum prestador foi encontrado.</p>
         ) : (
-          <div className="grid grid-cols-5 gap-6.5 min-w-[1580px]">
-                    {favorites.map((favorite) => (
-                        <ProfessionalCard
-                          key={favorite.id_favorito}
-                          name={favorite.prestador?.nome || "Nome não disponível"}
-                          img={favorite.prestador?.foto_perfil}
-                          id={favorite.id_prestador}
-                        />
-                    ))}
-                </div>
+          <div className='grid grid-cols-5 gap-6.5 min-w-[1580px]'>
+            {favorites.map((favorite) => (
+              <Link
+                to={`/professional/${favorite.id_prestador}`}
+                key={favorite.id_favorito}
+              >
+                <ProfessionalCard
+                  name={favorite.prestador?.nome || 'Nome não disponível'}
+                  img={favorite.prestador?.foto_perfil}
+                  id={favorite.id_prestador}
+                />
+              </Link>
+            ))}
+          </div>
         )}
       </section>
     </>
