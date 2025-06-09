@@ -48,6 +48,14 @@ Route::put('/enderecos/{id}', [EnderecoController::class, 'update']);
 Route::delete('/enderecos/{id}', [EnderecoController::class, 'destroy']);
 
 // ============================================================================
+// ROTAS DE REATIVAÇÃO E DESATIVAÇÃO DE CONTA (Públicas)
+// ============================================================================
+// POST /api/user/reativar - Reativar conta de usuário
+// Request: { "email": "seu@email.com", "senha": "sua_senha"}
+// Response: { "message": "Conta reativada com sucesso" }
+Route::post('/user/reativar', [UserController::class, 'reativarConta']);
+
+// ============================================================================
 // ROTAS PROTEGIDAS POR JWT (Requer autenticação)
 // Header necessário: Authorization: Bearer {jwt_token}
 // ============================================================================
@@ -77,6 +85,11 @@ Route::middleware('auth:api')->group(function () {
     // DELETE /api/user - Excluir conta do usuário
     // Response: { "message": "Conta excluída com sucesso" }
     Route::delete('/user', [UserController::class, 'destroy']);
+
+
+    // PUT /api/user/desativar - Desativar conta do usuário
+    // Response: { "message": "Conta desativada com sucesso" }
+    Route::put('/user/desativar', [UserController::class, 'desativarConta']);
 
     // ============================================================================
     // GERENCIAMENTO DE POSTS

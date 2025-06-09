@@ -25,7 +25,17 @@ class Users extends Authenticatable implements JWTSubject
         'telefone',
         'id_endereco',
         'remember_token',
+        'status',
     ];
+
+    protected static function boot()
+{
+    parent::boot();
+    
+    static::addGlobalScope('ativo', function ($query) {
+        return $query->where('status', 'ativo');
+    });
+}
 
     protected $hidden = [
         'senha',

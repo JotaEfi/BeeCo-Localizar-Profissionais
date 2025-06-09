@@ -111,7 +111,6 @@ class UserController extends Controller
             // Invalidar o token JWT
             JWTAuth::invalidate(JWTAuth::getToken());
 
-            // Excluir o usuário
             $user->delete();
 
             return response()->json([
@@ -124,4 +123,63 @@ class UserController extends Controller
             ], 500);
         }
     }
+
+    public function desativarConta(Request $request)
+{
+    try {
+        $user = auth()->user();
+        $user->status = 'inativo';
+        $user->save();
+
+        JWTAuth::invalidate(JWTAuth::getToken());
+
+        return response()->json([
+            'mensagem' => 'Conta desativada com sucesso'
+        ]);
+    } catch (\Exception $e) {
+        return response()->json([
+            'mensagem' => 'Erro ao desativar conta',
+            'erro' => $e->getMessage()
+        ], 500);
+    }
+}
+
+
+public function reativarConta(Request $request)
+{
+    try {
+        $request->validate([
+            'email' => 'required|email',
+            'senha' => 'required'
+        ]);
+
+        $user = Users::withoutGlobalScope('ativo')
+            ->where('email', $request->email)
+            ->where('status', 'inativo')
+            ->first();
+
+        if (!$user || !Hash::check($request->senha, $user->senha)) {
+            return response()->json([
+                'mensagem' => 'Credenciais inválidas'
+            ], 401);
+        }
+
+        $user->status = 'ativo';
+        $user->save();
+
+        $token = JWTAuth::fromUser($user);
+
+        return response()->json([
+            'mensagem' => 'Conta reativada com sucesso',
+            'token' => $token,
+            'usuario' => $user
+        ]);
+
+    } catch (\Exception $e) {
+        return response()->json([
+            'mensagem' => 'Erro ao reativar conta',
+            'erro' => $e->getMessage()
+        ], 500);
+    }
+}
 }
