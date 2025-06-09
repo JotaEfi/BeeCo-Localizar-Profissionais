@@ -24,6 +24,7 @@ return new class extends Migration {
                 $table->foreignId('id_endereco')->nullable()->constrained('endereco', 'id_endereco'); // Opcional, chave estrangeira
                 $table->rememberToken(); // Adicionando o campo remember_token
                 $table->timestamps(); // created_at, updated_at
+                $table->enum('status', ['ativo', 'inativo'])->default('ativo'); // Status do usuário, padrão 'ativo'
             });
         } else {
             Schema::table('users', function (Blueprint $table) {
