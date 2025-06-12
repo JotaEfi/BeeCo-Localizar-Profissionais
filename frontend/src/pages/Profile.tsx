@@ -8,6 +8,7 @@ import { useUser } from '@/contexts/UserContext'
 import { Post } from '@/types/postTypes'
 import { useEffect, useState } from 'react'
 import { domesticProfessions } from '@/mock/DomesticProfession'
+import { handleDeactivateAccount } from '@/api/userApi';
 
 export const Profile = () => {
   const [postData, setPostData] = useState<Post>({
@@ -415,8 +416,7 @@ export const Profile = () => {
             </div>
 
             <div className='mt-8 border-t border-gray-200 pt-6'>
-              <Button
-                type='button'
+              <Button onClick={handleDeactivateAccount} type='button'
                 className='w-full border-2 border-[#FF4B4B] !text-[#FF4B4B] hover:!bg-[#FF4B4B] hover:!text-white transition-all duration-300 !bg-transparent'
               >
                 Desativar Conta

@@ -45,3 +45,23 @@ export const updateUserData = async (userData: any) => {
     throw error
   }
 }
+
+export const handleDeactivateAccount = async (): Promise<void> => {
+  try {
+    const resp = await fetch('/api/user/desativar', {
+      method: 'PUT',
+      credentials: 'include'
+    });
+    const json: { message: string } = await resp.json();
+
+    if (resp.ok) {
+      alert(json.message);
+    } else {
+      alert('Falha ao desativar conta');
+    }
+  } catch (e) {
+    console.error(e);
+    alert('Erro de rede');
+  }
+};
+

@@ -6,6 +6,7 @@ import { userLoginType } from '@/types/userTypes'
 import { loginUser } from '@/api/userApi'
 import { setCookie } from '@/utlis/cookies'
 
+
 export const Login = () => {
   const [formData, setFormData] = useState<userLoginType>({
     email: '',
@@ -94,6 +95,8 @@ export const Login = () => {
       }))
     }
   }
+
+  
 
   return (
     <div className="flex flex-col justify-center items-center h-screen bg-[url('./assets/login.jpg')] bg-cover bg-center">
