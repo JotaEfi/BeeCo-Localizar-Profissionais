@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class PostController extends Controller
 {
@@ -29,14 +30,15 @@ class PostController extends Controller
             'tipo_postagem' => 'required|in:contratante,prestador',
             'preco' => 'nullable|numeric',
             'categoria' => 'nullable|string',
-            'imagem' => 'nullable|image|max:2048', // Aceita arquivo de imagem
+            'imagem' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Corrigido
         ]);
 
         $data = $request->only(['titulo', 'descricao', 'tipo_postagem', 'preco', 'categoria']);
         $data['user_id'] = Auth::id();
 
         if ($request->hasFile('imagem')) {
-            $data['imagem'] = $request->file('imagem')->store('posts', 'public');
+            $imagePath = $request->file('imagem')->store('posts', 'public');
+            $data['imagem'] = asset('storage/' . $imagePath); // Gera URL completa
         }
 
         $post = Post::create($data);
@@ -71,7 +73,14 @@ class PostController extends Controller
         $data = $request->only(['titulo', 'descricao', 'tipo_postagem', 'preco', 'categoria']);
 
         if ($request->hasFile('imagem')) {
-            $data['imagem'] = $request->file('imagem')->store('posts', 'public');
+            // Remove imagem antiga se existir
+            if ($post->imagem) {
+                $oldPath = str_replace(asset('storage/'), '', $post->imagem);
+                Storage::disk('public')->delete($oldPath);
+            }
+
+            $imagePath = $request->file('imagem')->store('posts', 'public');
+            $data['imagem'] = asset('storage/' . $imagePath); // Gera URL completa
         }
 
         $post->update($data);
