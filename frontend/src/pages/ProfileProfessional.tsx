@@ -168,22 +168,31 @@ export const ProfileProfessional = () => {
 
           {/* Galeria */}
           <div className='w-full flex gap-2'>
-            <div className='w-1/3'>
-              <div className='flex items-center justify-center bg-gray-200 rounded-md w-full h-full text-gray-500 text-center p-4'>
-                {post?.imagem}
+              <div className='w-1/3 h-[400px]'>
+                <div className='flex items-center justify-center bg-gray-200 rounded-md w-full h-full text-gray-500 text-center'>
+                  {post?.imagem ? (
+                    <img
+                      src={post.imagem}
+                      alt={post.titulo || 'Imagem do serviço'}
+                      className='w-full h-full object-cover rounded-md'
+                      style={{ minHeight: '100%' }}
+                    />
+                  ) : (
+                    <div className='text-gray-400'>Sem imagem</div>
+                  )}
+                </div>
+              </div>
+              <div className='w-2/3 grid grid-cols-3 gap-2'>
+                {Array.from({ length: 6 }).map((_, i) => (
+                  <div
+                    key={i}
+                    className='h-48 flex items-center justify-center bg-gray-200 rounded-md text-gray-500 text-center p-4'
+                  >
+                    Obra {i + 2}
+                  </div>
+                ))}
               </div>
             </div>
-            <div className='w-2/3 grid grid-cols-3 gap-2'>
-              {Array.from({ length: 6 }).map((_, i) => (
-                <div
-                  key={i}
-                  className='h-48 flex items-center justify-center bg-gray-200 rounded-md text-gray-500 text-center p-4'
-                >
-                  Obra {i + 2}
-                </div>
-              ))}
-            </div>
-          </div>
 
           {/* Informações do profissional */}
           <section className='w-full flex flex-col gap-4'>
