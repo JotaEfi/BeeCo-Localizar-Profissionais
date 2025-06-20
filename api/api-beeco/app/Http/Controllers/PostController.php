@@ -9,7 +9,6 @@ use Illuminate\Support\Facades\Storage;
 
 class PostController extends Controller
 {
-    
     public function index(Request $request)
     {
         $tipo = $request->query('tipo'); 
@@ -19,7 +18,15 @@ class PostController extends Controller
             $query->where('tipo_postagem', $tipo); 
         }
 
-        return response()->json($query->latest()->get());
+        $posts = $query->latest()->get();
+
+        foreach ($posts as $post) {
+            if ($post->imagem) {
+                $post->imagem_url = Storage::url($post->imagem);
+            }
+        }
+
+        return response()->json($posts);
     }
 
     public function store(Request $request)
@@ -43,12 +50,20 @@ class PostController extends Controller
 
         $post = Post::create($data);
 
+        if ($post->imagem) {
+            $post->imagem_url = Storage::url($post->imagem);
+        }
+
         return response()->json($post, 201);
     }
 
     public function show($id)
     {
-        $post = Post::with('user')->findOrFail($id); 
+        $post = Post::with('user')->findOrFail($id);
+
+        if ($post->imagem) {
+            $post->imagem_url = Storage::url($post->imagem);
+        }
 
         return response()->json($post);
     }
@@ -85,17 +100,21 @@ class PostController extends Controller
 
         $post->update($data);
 
+        if ($post->imagem) {
+            $post->imagem_url = Storage::url($post->imagem);
+        }
+
         return response()->json($post);
     }
 
     public function destroy($id)
     {
-        $post = Post::findOrFail($id); 
+        $post = Post::findOrFail($id);
 
         if ($post->user_id !== Auth::id()) {
             return response()->json(['message' => 'Unauthorized'], 403);
         }
-        
+
         $post->delete();
 
         return response()->json(['message' => 'Postagem deletada com sucesso']);
