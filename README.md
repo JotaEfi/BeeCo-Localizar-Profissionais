@@ -1,1 +1,1 @@
-# Plataforma de Contratar Profissionais
+# BeeCo - Contratar Profissionais
